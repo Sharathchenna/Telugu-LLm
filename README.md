@@ -1,6 +1,7 @@
 # corpus collection
+Telugu Language Corpus Collection
 
-
+తెలుగు భాషా సంపుటి సేకరణ
 
 ## Getting started
 
