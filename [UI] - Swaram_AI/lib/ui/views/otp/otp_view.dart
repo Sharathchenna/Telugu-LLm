@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:stacked/stacked.dart';
@@ -94,10 +93,10 @@ class OtpView extends StackedView<OtpViewModel> {
                             borderColor: kcMediumGrey),
                         spaceBetween: 12.0,
                         onCompleted: (pin) {
-                          print("Completed: " + pin);
+                          viewModel.logger.i("Completed: $pin");
                         },
                         onChanged: (pin) {
-                          print('On change: $pin');
+                          viewModel.logger.i("On Change: $pin");
                         },
                       ),
                     ],

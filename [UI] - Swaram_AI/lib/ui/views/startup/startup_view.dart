@@ -20,7 +20,7 @@ class StartupView extends StackedView<StartupViewModel> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'SWARAM AI',
+              'Telugu Corpus AI',
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
             ),
             Row(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
+import 'package:swaram_ai/ui/common/ui_helpers.dart';
 
 import 'login_header_model.dart';
 
@@ -18,13 +19,13 @@ class LoginHeader extends StackedView<LoginHeaderModel> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+          padding: const EdgeInsets.only(top: 20.0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
               'assets/images/ai_logo.png',
-              width: 300,
-              height: 200,
+              width: screenWidthFraction(context, dividedBy: 3),
+              height: screenHeightFraction(context, dividedBy: 5),
               fit: BoxFit.cover,
             ),
           ),
@@ -34,12 +35,12 @@ class LoginHeader extends StackedView<LoginHeaderModel> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
+              padding: const EdgeInsets.only(bottom: 30),
               child: Text(
                 headerText,
                 style: GoogleFonts.montserrat(
                     color: kcTextDarkColor,
-                    fontSize: 24,
+                    fontSize: getResponsiveFontSize(context, fontSize: 48),
                     fontWeight: FontWeight.w400),
               ),
             ),

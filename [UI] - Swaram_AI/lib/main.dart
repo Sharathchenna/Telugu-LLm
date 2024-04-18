@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swaram_ai/app/app.bottomsheets.dart';
 import 'package:swaram_ai/app/app.dialogs.dart';
 import 'package:swaram_ai/app/app.locator.dart';
@@ -18,6 +19,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       initialRoute: Routes.startupView,
       debugShowCheckedModeBanner: false,

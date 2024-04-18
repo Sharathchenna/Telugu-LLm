@@ -33,7 +33,9 @@ class SignInView extends StackedView<SignInViewModel> with $SignInView {
     Widget? child,
   ) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        forceMaterialTransparency: true,
         backgroundColor: kcBackgroundColor,
         actions: [
           Padding(
@@ -41,21 +43,24 @@ class SignInView extends StackedView<SignInViewModel> with $SignInView {
               right: 24.0,
               top: 12.0,
             ),
-            child: Container(
-              color: kcVeryBlueLightColor,
-              child: IconButton(
-                icon: SvgPicture.asset(
-                  colorFilter: const ColorFilter.mode(
-                      kcPrimaryBlueColor, BlendMode.srcIn),
-                  'assets/icons/help_doc_ext.svg',
-                  width: 32,
-                  height: 32,
-                ), // Example icon, adjust as needed
-                iconSize: 32, // Adjust icon size as needed
-                padding: const EdgeInsets.all(8), // Adjust padding as needed
-                onPressed: () {
-                  // Handle button press
-                },
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Container(
+                color: kcVeryBlueLightColor,
+                child: IconButton(
+                  icon: SvgPicture.asset(
+                    colorFilter: const ColorFilter.mode(
+                        kcPrimaryBlueColor, BlendMode.srcIn),
+                    'assets/icons/help_doc_ext.svg',
+                    width: 32,
+                    height: 32,
+                  ), // Example icon, adjust as needed
+                  iconSize: 32, // Adjust icon size as needed
+                  padding: const EdgeInsets.all(8), // Adjust padding as needed
+                  onPressed: () {
+                    // Handle button press
+                  },
+                ),
               ),
             ),
           ),
@@ -68,34 +73,44 @@ class SignInView extends StackedView<SignInViewModel> with $SignInView {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                const LoginHeader(
-                  headerText: "Sign in to your account",
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const LoginHeader(
+                      headerText: "Sign in to your account",
+                    ),
+                    InputWithField(
+                      labelName: "Name",
+                      fieldLabel: "Enter a name for your profile",
+                      textController: userNameController,
+                      focusNode: userNameFocusNode,
+                    ),
+                    verticalSpaceMedium,
+                    InputWithField(
+                      labelName: "Phone number",
+                      fieldLabel: "Enter your phone number here",
+                      textController: phoneNumberController,
+                      focusNode: phoneNumberFocusNode,
+                    ),
+                    verticalSpaceMedium,
+                    PrimarySubmitButton(
+                      buttonText: "Sign In",
+                      onTap: viewModel.navigateToOtpView,
+                    ),
+                    const InfoMessage(
+                        infoText: "No account yet?",
+                        actionString: "Sign up now"),
+                  ],
                 ),
-                InputWithField(
-                  labelName: "Name",
-                  fieldLabel: "Enter a name for your profile",
-                  textController: userNameController,
-                  focusNode: userNameFocusNode,
-                ),
-                verticalSpaceMedium,
-                InputWithField(
-                  labelName: "Phone number",
-                  fieldLabel: "Enter your phone number here",
-                  textController: phoneNumberController,
-                  focusNode: phoneNumberFocusNode,
-                ),
-                verticalSpaceMedium,
-                PrimarySubmitButton(
-                  buttonText: "Sign In",
-                  onTap: viewModel.navigateToOtpView,
-                ),
-                const InfoMessage(
-                    infoText: "No account yet?", actionString: "Sign up now"),
-              ],
+              ),
             ),
-            const SwechaFooter()
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom:
+                      screenHeightFraction(context, dividedBy: 40, max: 10.0)),
+              child: const SwechaFooter(),
+            )
           ],
         ),
       ),
