@@ -66,7 +66,6 @@ class SignInView extends StackedView<SignInViewModel> with $SignInView {
           ),
         ],
       ),
-      backgroundColor: kcBackgroundColor,
       body: SafeArea(
         top: true,
         child: Column(

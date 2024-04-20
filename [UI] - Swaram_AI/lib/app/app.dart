@@ -5,6 +5,7 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/ui/views/sign_in/sign_in_view.dart';
 import 'package:swaram_ai/ui/views/otp/otp_view.dart';
+import 'package:swaram_ai/ui/views/dashboard/dashboard_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -15,6 +16,7 @@ import 'package:swaram_ai/ui/views/otp/otp_view.dart';
     MaterialRoute(
       page: OtpView,
     ),
+    MaterialRoute(page: DashboardView),
 // @stacked-route
   ],
   dependencies: [
