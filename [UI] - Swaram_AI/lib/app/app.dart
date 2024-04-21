@@ -6,6 +6,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/ui/views/sign_in/sign_in_view.dart';
 import 'package:swaram_ai/ui/views/otp/otp_view.dart';
 import 'package:swaram_ai/ui/views/dashboard/dashboard_view.dart';
+import 'package:swaram_ai/services/timer_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -23,7 +24,8 @@ import 'package:swaram_ai/ui/views/dashboard/dashboard_view.dart';
     LazySingleton(classType: BottomSheetService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: NavigationService),
-    // @stacked-service
+    LazySingleton(classType: TimerService),
+// @stacked-service
   ],
   bottomsheets: [
     StackedBottomsheet(classType: NoticeSheet),

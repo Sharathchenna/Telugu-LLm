@@ -1,14 +1,12 @@
-import 'package:flexi_chip/flexi_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:lottie/lottie.dart';
-
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
-import 'package:swaram_ai/ui/widgets/common/chip_item/chip_item.dart';
+import 'package:swaram_ai/ui/widgets/common/category/category.dart';
+import 'package:swaram_ai/ui/widgets/common/recording/recording.dart';
+import 'package:swaram_ai/ui/widgets/common/timer/timer.dart';
 
 import 'dashboard_viewmodel.dart';
 
@@ -128,235 +126,18 @@ class DashboardView extends StackedView<DashboardViewModel> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'What do you want to speak about?',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    'Select a category to get topic ideas, and start recording',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 13,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                    child: const Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: Wrap(
-                        spacing: 13,
-                        runSpacing: 13,
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        direction: Axis.horizontal,
-                        runAlignment: WrapAlignment.start,
-                        verticalDirection: VerticalDirection.down,
-                        clipBehavior: Clip.none,
-                        children: [
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                          ChipItem(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              Expanded(
+                flex: 4,
+                child: AnimatedSwitcher(
+                  duration: const Duration(seconds: 2),
+                  child: viewModel.isRecordStarted
+                      ? const Timer()
+                      : const Category(),
+                ),
               ),
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Say something, start recording.',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: kcTextDarkColor,
-                        ),
-                      ),
-                      verticalSpaceTiny,
-                      Text(
-                        'Already know what to speak, just go ahead and record!',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal,
-                          color: kcTextDarkColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Align(
-                    alignment: const AlignmentDirectional(0, 0),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 13, 0, 0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Lottie.asset(
-                              fit: BoxFit.cover,
-                              height:
-                                  screenHeightFraction(context, dividedBy: 4),
-                              filterQuality: FilterQuality.high,
-                              repeat: true,
-                              reverse: true,
-                              "assets/lottie/mic_animation.json"),
-
-                          // FlutterFlowIconButton(
-                          //   borderColor: Color(0xFF387FCE),
-                          //   borderRadius: 40,
-                          //   borderWidth: 4,
-                          //   buttonSize: 64,
-                          //   fillColor: Color(0xFF4487D1),
-                          //   hoverColor: Color(0xFF6699EE),
-                          //   icon: Icon(
-                          //     Icons.mic,
-                          //     color: Colors.white,
-                          //     size: 36,
-                          //   ),
-                          //   onPressed: () {
-                          //     print('IconButton pressed ...');
-                          //   },
-                          // ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 5, 0, 0),
-                            child: Text(
-                              'Tap the mic to speak',
-                              style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Align(
-                        alignment: const AlignmentDirectional(0, -1),
-                        child: Container(
-                          width: 100,
-                          height: 31,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            border: Border.all(
-                              color: Color(0xFF696969),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(3, 3, 3, 3),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                // FaIcon(
-                                //   FontAwesomeIcons.crown,
-                                //   color: FlutterFlowTheme.of(context)
-                                //       .secondaryText,
-                                //   size: 20,
-                                // ),
-                                Text(
-                                  '23',
-                                  style: GoogleFonts.montserrat(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 3, 0, 0),
-                        child: Text(
-                          'Hours of Voice',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(0, -1),
-                        child: Container(
-                          width: 100,
-                          height: 31,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            border: Border.all(
-                              color: Color(0xFF696969),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(3, 3, 3, 3),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Icon(
-                                  Icons.stars_rounded,
-                                  color: kcMediumGrey,
-                                  size: 24,
-                                ),
-                                Text(
-                                  '234',
-                                  style: GoogleFonts.montserrat(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 3, 0, 0),
-                        child: Text(
-                          'Credit Score',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              const Expanded(
+                flex: 3,
+                child: Recording(),
               ),
             ],
           ),

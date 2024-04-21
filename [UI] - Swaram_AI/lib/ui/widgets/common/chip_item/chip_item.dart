@@ -6,7 +6,15 @@ import 'package:stacked/stacked.dart';
 import 'chip_item_model.dart';
 
 class ChipItem extends StackedView<ChipItemModel> {
-  const ChipItem({super.key});
+  final String label;
+  final Color selectedColor;
+  final String imagePath;
+
+  const ChipItem(
+      {required this.label,
+      required this.selectedColor,
+      required this.imagePath,
+      super.key});
 
   @override
   Widget builder(
@@ -14,28 +22,30 @@ class ChipItem extends StackedView<ChipItemModel> {
     ChipItemModel viewModel,
     Widget? child,
   ) {
-    return FlexiChip(
-      label: Text(
-        "Fables",
-        style: GoogleFonts.montserrat(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
+    return FittedBox(
+      child: FlexiChip(
+        label: Text(
+          label,
+          style: GoogleFonts.montserrat(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-      ),
-      leading: Image.asset(
-        "assets/icons/book_open.png",
-        height: 24,
-        width: 24,
-        fit: BoxFit.cover,
-      ),
-      style: FlexiChipStyle.when(
-        enabled: FlexiChipStyle.outlined(),
-        selected: FlexiChipStyle.filled(
-          color: Color(0xFFE5BC52),
+        leading: Image.asset(
+          imagePath,
+          height: 24,
+          width: 24,
+          fit: BoxFit.cover,
         ),
+        style: FlexiChipStyle.when(
+          enabled: FlexiChipStyle.outlined(),
+          selected: FlexiChipStyle.filled(
+            color: selectedColor,
+          ),
+        ),
+        onPressed: viewModel.changeInSelection,
+        selected: viewModel.isSelected,
       ),
-      onPressed: () {},
-      selected: false,
     );
   }
 

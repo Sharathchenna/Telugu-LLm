@@ -7,10 +7,12 @@ environment:
   sdk: ">=3.0.3 <4.0.0"
 
 dependencies:
+  avatar_glow: ^3.0.1
   flexi_chip: ^1.0.8
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.10+1
+  font_awesome_flutter: ^10.7.0
   google_fonts: ^6.2.1
   icons_plus: ^5.0.0
   logger: ^2.2.0
