@@ -18,7 +18,7 @@ import 'sign_in_viewmodel.dart';
   FormTextField(name: 'phoneNumber')
 ])
 class SignInView extends StackedView<SignInViewModel> with $SignInView {
-  const SignInView({Key? key}) : super(key: key);
+  const SignInView({super.key});
 
   @override
   void onViewModelReady(SignInViewModel viewModel) {
@@ -95,7 +95,7 @@ class SignInView extends StackedView<SignInViewModel> with $SignInView {
                     verticalSpaceMedium,
                     PrimarySubmitButton(
                       buttonText: "Sign In",
-                      onTap: viewModel.navigateToOtpView,
+                      onTap: viewModel.signupAndNavigateToOtp,
                     ),
                     const InfoMessage(
                         infoText: "No account yet?",

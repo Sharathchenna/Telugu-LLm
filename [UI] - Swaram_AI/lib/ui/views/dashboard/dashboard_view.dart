@@ -11,7 +11,7 @@ import 'package:swaram_ai/ui/widgets/common/timer/timer.dart';
 import 'dashboard_viewmodel.dart';
 
 class DashboardView extends StackedView<DashboardViewModel> {
-  const DashboardView({Key? key}) : super(key: key);
+  const DashboardView({super.key});
 
   @override
   Widget builder(
@@ -20,33 +20,6 @@ class DashboardView extends StackedView<DashboardViewModel> {
     Widget? child,
   ) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-          ],
-        ),
-      ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: const Icon(

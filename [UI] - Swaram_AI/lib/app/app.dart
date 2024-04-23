@@ -7,6 +7,10 @@ import 'package:swaram_ai/ui/views/sign_in/sign_in_view.dart';
 import 'package:swaram_ai/ui/views/otp/otp_view.dart';
 import 'package:swaram_ai/ui/views/dashboard/dashboard_view.dart';
 import 'package:swaram_ai/services/timer_service.dart';
+import 'package:swaram_ai/services/auth_service.dart';
+import 'package:swaram_ai/services/client_service.dart';
+import 'package:swaram_ai/services/record_service.dart';
+import 'package:swaram_ai/services/permission_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -25,6 +29,10 @@ import 'package:swaram_ai/services/timer_service.dart';
     LazySingleton(classType: DialogService),
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: TimerService),
+    LazySingleton(classType: AuthService),
+    LazySingleton(classType: ClientService),
+    LazySingleton(classType: RecordService),
+    LazySingleton(classType: PermissionService),
 // @stacked-service
   ],
   bottomsheets: [

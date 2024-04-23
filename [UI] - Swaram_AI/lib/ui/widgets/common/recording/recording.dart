@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:swaram_ai/ui/widgets/common/recording/header.dart';
@@ -14,12 +15,16 @@ class Recording extends StackedView<RecordingModel> {
     RecordingModel viewModel,
     Widget? child,
   ) {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Header(),
-        RecordingAction(),
+        viewModel.isRecordStarted
+            ? SizedBox(
+                child: Lottie.asset("assets/lottie/wave_animation.json"),
+              )
+            : const Header(),
+        const RecordingAction(),
       ],
     );
   }

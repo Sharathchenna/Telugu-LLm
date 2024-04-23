@@ -1,6 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
@@ -8,6 +7,7 @@ import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'package:swaram_ai/ui/widgets/common/recording/recording_model.dart';
 import 'package:swaram_ai/ui/widgets/common/reward_footer/reward_footer.dart';
+import 'package:lottie/lottie.dart';
 
 class RecordingAction extends StackedView<RecordingModel> {
   const RecordingAction({

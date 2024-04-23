@@ -14,4 +14,14 @@ class RecordingModel extends ReactiveViewModel {
   toggleRecording() {
     _timerService.startOrStopRecording();
   }
+
+  int volume0to(int maxVolumeToDisplay) {
+    return (_timerService.getVolume * maxVolumeToDisplay).round().abs();
+  }
+
+  @override
+  void dispose() {
+    _timerService.dispose();
+    super.dispose();
+  }
 }
