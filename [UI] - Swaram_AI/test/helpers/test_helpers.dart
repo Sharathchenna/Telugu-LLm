@@ -4,7 +4,6 @@ import 'package:swaram_ai/app/app.locator.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/services/timer_service.dart';
 import 'package:swaram_ai/services/record_service.dart';
-import 'package:swaram_ai/services/permission_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -15,7 +14,6 @@ import 'test_helpers.mocks.dart';
   MockSpec<DialogService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<TimerService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<RecordService>(onMissingStub: OnMissingStub.returnDefault),
-  MockSpec<PermissionService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -24,7 +22,6 @@ void registerServices() {
   getAndRegisterDialogService();
   getAndRegisterTimerService();
   getAndRegisterRecordService();
-  getAndRegisterPermissionService();
 // @stacked-mock-register
 }
 
@@ -92,12 +89,6 @@ MockRecordService getAndRegisterRecordService() {
   return service;
 }
 
-MockPermissionService getAndRegisterPermissionService() {
-  _removeRegistrationIfExists<PermissionService>();
-  final service = MockPermissionService();
-  locator.registerSingleton<PermissionService>(service);
-  return service;
-}
 // @stacked-mock-create
 
 void _removeRegistrationIfExists<T extends Object>() {

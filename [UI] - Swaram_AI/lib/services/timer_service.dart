@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.logger.dart';
-import 'package:swaram_ai/services/permission_service.dart';
 
 class TimerService with ListenableServiceMixin {
   final _recordingStarted = ReactiveValue<bool>(false);
@@ -16,7 +15,6 @@ class TimerService with ListenableServiceMixin {
   final _volume = ReactiveValue<double>(0.0);
   final _minVolume = -45.0;
   final _logger = getLogger("TimerService");
-  final _permissionService = locator<PermissionService>();
   final _bottomsheet = locator<BottomSheetService>();
 
   Timer? _timer;
@@ -60,14 +58,19 @@ class TimerService with ListenableServiceMixin {
     }
   }
 
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
   void _startRecording() async {
     _logger.i("Start recording is being called");
-
-    if (await _permissionService.requestPermission(Permission.microphone) &&
-        await _recorder.hasPermission()) {
+    if (await _recorder.hasPermission()) {
       _logger.i("User granted the microphone permission");
       if (!await _recorder.isRecording()) {
-        await _recorder.start(const RecordConfig(), path: "/lib");
+        final path = await _localPath;
+        await _recorder.start(const RecordConfig(),
+            path: "$path/my_recording.m4a");
       }
     }
 

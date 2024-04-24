@@ -19,11 +19,14 @@ class Recording extends StackedView<RecordingModel> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        viewModel.isRecordStarted
-            ? SizedBox(
-                child: Lottie.asset("assets/lottie/wave_animation.json"),
-              )
-            : const Header(),
+        AnimatedSwitcher(
+          duration: const Duration(seconds: 2),
+          child: viewModel.isRecordStarted
+              ? SizedBox(
+                  child: Lottie.asset("assets/lottie/wave_animation.json"),
+                )
+              : const Header(),
+        ),
         const RecordingAction(),
       ],
     );

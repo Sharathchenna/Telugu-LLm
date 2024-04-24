@@ -10,7 +10,6 @@ import 'package:swaram_ai/services/timer_service.dart';
 import 'package:swaram_ai/services/auth_service.dart';
 import 'package:swaram_ai/services/client_service.dart';
 import 'package:swaram_ai/services/record_service.dart';
-import 'package:swaram_ai/services/permission_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -32,7 +31,6 @@ import 'package:swaram_ai/services/permission_service.dart';
     LazySingleton(classType: AuthService),
     LazySingleton(classType: ClientService),
     LazySingleton(classType: RecordService),
-    LazySingleton(classType: PermissionService),
 // @stacked-service
   ],
   bottomsheets: [

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swaram_ai/app/app.bottomsheets.dart';
 import 'package:swaram_ai/app/app.dialogs.dart';
+import 'package:swaram_ai/app/app.hive.dart';
 import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.router.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -12,6 +13,7 @@ Future<void> main() async {
   await setupLocator();
   setupDialogUi();
   setupBottomSheetUi();
+  await setupHive();
   runApp(const MainApp());
 }
 

@@ -13,7 +13,6 @@ import 'package:stacked_shared/stacked_shared.dart';
 
 import '../services/auth_service.dart';
 import '../services/client_service.dart';
-import '../services/permission_service.dart';
 import '../services/record_service.dart';
 import '../services/timer_service.dart';
 
@@ -35,5 +34,4 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => ClientService());
   locator.registerLazySingleton(() => RecordService());
-  locator.registerLazySingleton(() => PermissionService());
 }
