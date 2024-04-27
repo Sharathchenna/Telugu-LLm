@@ -7,7 +7,7 @@ Telugu Language Corpus Collection
 
 In the frontend, we use flutter flow for designing the UI and core flutter native for integrations.
 
-- To design the application you can login to app.flutterflow.io and can start the designs
+- To design the application you can login to [flutter flow](https://app.flutterflow.io) and can start the designs
 
 ## For flutter core native setup
 - Install the flutter froom official flutter website
