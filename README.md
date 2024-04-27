@@ -3,6 +3,18 @@ Telugu Language Corpus Collection
 
 తెలుగు భాషా సంపుటి సేకరణ
 
+# Setup guide
+
+In the frontend, we use flutter flow for designing the UI and core flutter native for integrations.
+
+- To design the application you can login to app.flutterflow.io and can start the designs
+
+## For flutter core native setup
+- Install the flutter froom official flutter website
+- Once its installed, clone the repo
+- open the any simulator, if you are using mac then ios Simulator otherwise android simulator for windows [refer](https://docs.flutter.dev/get-started/install)
+- from project directory run the flutter run command to run the application
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
