@@ -17,6 +17,7 @@ class Category extends StackedView<CategoryModel> {
     Widget? child,
   ) {
     return Column(
+      key: const ValueKey(true),
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -48,7 +49,7 @@ class Category extends StackedView<CategoryModel> {
             child: Wrap(
               spacing: screenWidthFraction(context, dividedBy: 20),
               runSpacing: 15,
-              children: viewModel.getCategoryData(),
+              children: viewModel.categoryData,
             ),
           ),
         ),

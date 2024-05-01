@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:appwrite/appwrite.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.logger.dart';
+import 'package:swaram_ai/model/recording.dart';
 import 'package:swaram_ai/services/record_service.dart';
+import 'package:swaram_ai/ui/common/app_hive.dart';
 
 class TimerService with ListenableServiceMixin {
   final _recordingStarted = ReactiveValue<bool>(false);
@@ -48,7 +51,7 @@ class TimerService with ListenableServiceMixin {
 
     _bottomsheet.showBottomSheet(
       title: "Recording status",
-      description: status ? "Successfully uploaded" : "Something went wrong",
+      description: status ? "Successfully saved" : "Something went wrong",
     );
     _recordingSeconds.value = 0;
     _recordingMinutes.value = 0;

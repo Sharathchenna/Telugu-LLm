@@ -31,12 +31,10 @@ class AuthService {
       email: email,
       password: password,
     );
+    //adding auth session in box
     var auth = await Hive.openBox(authBox);
-
     await auth.put("auth", session.toMap());
-
     _logger.i(session.toMap());
-
     return true;
   }
 }

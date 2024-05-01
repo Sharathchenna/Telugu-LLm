@@ -2,17 +2,16 @@ import 'package:flexi_chip/flexi_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
-
-import 'chip_item_model.dart';
+import 'package:swaram_ai/ui/widgets/common/chip_item/chip_item_model.dart';
 
 class ChipItem extends StackedView<ChipItemModel> {
   final String label;
-  final Color selectedColor;
+  final String id;
   final String imagePath;
 
   const ChipItem(
-      {required this.label,
-      required this.selectedColor,
+      {required this.id,
+      required this.label,
       required this.imagePath,
       super.key});
 
@@ -23,6 +22,7 @@ class ChipItem extends StackedView<ChipItemModel> {
     Widget? child,
   ) {
     return FittedBox(
+      key: const ValueKey(true),
       child: FlexiChip(
         label: Text(
           label,
@@ -39,12 +39,8 @@ class ChipItem extends StackedView<ChipItemModel> {
         ),
         style: FlexiChipStyle.when(
           enabled: FlexiChipStyle.outlined(),
-          selected: FlexiChipStyle.filled(
-            color: selectedColor,
-          ),
         ),
-        onPressed: viewModel.changeInSelection,
-        selected: viewModel.isSelected,
+        onPressed: () => viewModel.toggleChipCard(id),
       ),
     );
   }

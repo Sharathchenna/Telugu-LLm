@@ -1,51 +1,49 @@
-import 'package:flutter/material.dart';
-
 import '../model/category.dart';
 
-final categoryData = [
+final categoryDataItem = [
   Category(
+    id: "1",
     label: "Fables",
-    selectedColor: const Color(0xFFE5BC52),
     imagePath: "assets/icons/book_open.png",
   ),
   Category(
+    id: "2",
     label: "Food",
-    selectedColor: const Color(0xFF00D6D6),
     imagePath: "assets/icons/food.png",
   ),
   Category(
+    id: "3",
     label: "Events",
-    selectedColor: const Color(0xFFF59D56),
     imagePath: "assets/icons/events.png",
   ),
   Category(
+    id: "4",
     label: "Music",
-    selectedColor: const Color(0xFF9D9FD6),
     imagePath: "assets/icons/music.png",
   ),
   Category(
+    id: "5",
     label: "Places",
-    selectedColor: const Color(0xFFF4989E),
     imagePath: "assets/icons/places.png",
   ),
   Category(
+    id: "6",
     label: "People",
-    selectedColor: const Color(0xFFFBCD59),
     imagePath: "assets/icons/people.png",
   ),
   Category(
+    id: "7",
     label: "Skills",
-    selectedColor: const Color(0xFF77CBD2),
     imagePath: "assets/icons/skills.png",
   ),
   Category(
+    id: "8",
     label: "Nature",
-    selectedColor: const Color(0xFF55A7F9),
     imagePath: "assets/icons/nature.png",
   ),
   Category(
+    id: "9",
     label: "Movies",
-    selectedColor: const Color(0xFFFFB899),
     imagePath: "assets/icons/movies.png",
   ),
 ];

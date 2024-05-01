@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
-
 class Category {
+  final String id;
   final String label;
-  final Color selectedColor;
   final String imagePath;
 
-  Category(
-      {required this.label,
-      required this.selectedColor,
-      required this.imagePath});
+  Category({required this.id, required this.label, required this.imagePath});
 }

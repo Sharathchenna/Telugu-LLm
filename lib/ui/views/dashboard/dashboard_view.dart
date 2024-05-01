@@ -5,6 +5,8 @@ import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'package:swaram_ai/ui/widgets/common/category/category.dart';
+import 'package:swaram_ai/ui/widgets/common/category_detail/category_detail.dart';
+import 'package:swaram_ai/ui/widgets/common/dashboard_header/dashboard_header.dart';
 import 'package:swaram_ai/ui/widgets/common/recording/recording.dart';
 import 'package:swaram_ai/ui/widgets/common/timer/timer.dart';
 
@@ -105,7 +107,10 @@ class DashboardView extends StackedView<DashboardViewModel> {
                   duration: const Duration(seconds: 2),
                   child: viewModel.isRecordStarted
                       ? const Timer()
-                      : const Category(),
+                      : const DashboardHeader(
+                          frontWidget: Category(),
+                          rearWidget: CategoryDetail(),
+                        ),
                 ),
               ),
               const Expanded(
