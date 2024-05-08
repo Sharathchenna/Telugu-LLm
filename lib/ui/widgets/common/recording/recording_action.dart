@@ -28,24 +28,28 @@ class RecordingAction extends StackedView<RecordingModel> {
             child: AvatarGlow(
               glowColor: kcBlueLightColor,
               duration: const Duration(milliseconds: 2000),
-              animate: !viewModel.isRecordStarted,
+              animate: !viewModel.isRecordStarted && !viewModel.showProgress,
               repeat: true,
               child: CircleAvatar(
                 backgroundColor: viewModel.isRecordStarted
                     ? kcErrorColor
                     : kcPrimaryBlueColor,
                 radius: screenWidthFraction(context, dividedBy: 10),
-                child: viewModel.isRecordStarted
-                    ? const FaIcon(
-                        FontAwesomeIcons.stop,
+                child: viewModel.showProgress
+                    ? const CircularProgressIndicator(
                         color: kcBackgroundColor,
-                        size: 40,
                       )
-                    : const FaIcon(
-                        FontAwesomeIcons.microphone,
-                        color: kcBackgroundColor,
-                        size: 40,
-                      ),
+                    : viewModel.isRecordStarted
+                        ? const FaIcon(
+                            FontAwesomeIcons.stop,
+                            color: kcBackgroundColor,
+                            size: 40,
+                          )
+                        : const FaIcon(
+                            FontAwesomeIcons.microphone,
+                            color: kcBackgroundColor,
+                            size: 40,
+                          ),
               ),
             ),
           ),

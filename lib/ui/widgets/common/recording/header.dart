@@ -6,7 +6,11 @@ import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 
 class Header extends StatelessWidget {
+  final String headerText;
+  final String subTitleText;
   const Header({
+    required this.headerText,
+    this.subTitleText = "",
     super.key,
   });
 
@@ -18,7 +22,7 @@ class Header extends StatelessWidget {
       children: [
         FittedBox(
           child: Text(
-            'Say something, start recording.',
+            headerText,
             style: GoogleFonts.montserrat(
               fontSize: 20,
               fontWeight: FontWeight.w500,
@@ -27,16 +31,17 @@ class Header extends StatelessWidget {
           ),
         ),
         verticalSpaceTiny,
-        FittedBox(
-          child: Text(
-            'Already know what to speak, just go ahead and record!',
-            style: GoogleFonts.montserrat(
-              fontSize: 13,
-              fontWeight: FontWeight.normal,
-              color: kcTextDarkColor,
+        if (subTitleText != "")
+          FittedBox(
+            child: Text(
+              subTitleText,
+              style: GoogleFonts.montserrat(
+                fontSize: 13,
+                fontWeight: FontWeight.normal,
+                color: kcTextDarkColor,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

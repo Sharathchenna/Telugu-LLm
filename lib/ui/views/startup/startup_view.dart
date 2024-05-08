@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
+import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
+import 'package:swaram_ai/ui/widgets/common/swecha_footer/swecha_footer.dart';
 
 import 'startup_viewmodel.dart';
 
@@ -14,31 +17,35 @@ class StartupView extends StackedView<StartupViewModel> {
     StartupViewModel viewModel,
     Widget? child,
   ) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Telugu Corpus AI',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Loading ...', style: TextStyle(fontSize: 16)),
-                horizontalSpaceSmall,
-                SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    color: Colors.black,
-                    strokeWidth: 6,
-                  ),
-                )
-              ],
-            ),
-          ],
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/images/ai_logo.png",
+                fit: BoxFit.cover,
+              ),
+              FittedBox(
+                child: Text(
+                  "తెలుగు భాషా సంపుటి",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w600,
+                      color: kcPrimaryBlueColor),
+                ),
+              ),
+              verticalSpaceMedium,
+              const SwechaFooter(),
+              verticalSpaceLarge,
+              const CircularProgressIndicator(
+                color: kcPrimaryBlueColor,
+              )
+            ],
+          ),
         ),
       ),
     );

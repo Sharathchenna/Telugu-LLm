@@ -6,7 +6,6 @@ import 'package:otp_text_field/style.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
-import 'package:swaram_ai/ui/widgets/common/info_message/info_message.dart';
 import 'package:swaram_ai/ui/widgets/common/login_header/login_header.dart';
 import 'package:swaram_ai/ui/widgets/common/primary_submit_button/primary_submit_button.dart';
 import 'package:swaram_ai/ui/widgets/common/swecha_footer/swecha_footer.dart';
@@ -14,7 +13,14 @@ import 'package:swaram_ai/ui/widgets/common/swecha_footer/swecha_footer.dart';
 import 'otp_viewmodel.dart';
 
 class OtpView extends StackedView<OtpViewModel> {
-  const OtpView({super.key});
+  final String userId;
+  const OtpView({required this.userId, super.key});
+
+  @override
+  void onViewModelReady(OtpViewModel viewModel) {
+    viewModel.userId = userId;
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   Widget builder(
@@ -24,6 +30,7 @@ class OtpView extends StackedView<OtpViewModel> {
   ) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: kcBackgroundColor,
         actions: [
           Padding(
@@ -82,35 +89,29 @@ class OtpView extends StackedView<OtpViewModel> {
                       ),
                       verticalSpaceSmall,
                       OTPTextField(
-                        length: 5,
-                        width: screenWidth(context),
-                        fieldWidth: 54,
-                        style: const TextStyle(fontSize: 17),
-                        textFieldAlignment: MainAxisAlignment.spaceAround,
-                        fieldStyle: FieldStyle.box,
-                        otpFieldStyle: OtpFieldStyle(
-                            backgroundColor: Colors.white,
-                            borderColor: kcMediumGrey),
-                        spaceBetween: 12.0,
-                        onCompleted: (pin) {
-                          viewModel.logger.i("Completed: $pin");
-                        },
-                        onChanged: (pin) {
-                          viewModel.logger.i("On Change: $pin");
-                        },
-                      ),
+                          length: 6,
+                          width: screenWidth(context),
+                          fieldWidth: 50,
+                          style: const TextStyle(fontSize: 17),
+                          textFieldAlignment: MainAxisAlignment.spaceAround,
+                          fieldStyle: FieldStyle.box,
+                          otpFieldStyle: OtpFieldStyle(
+                              backgroundColor: Colors.white,
+                              borderColor: kcMediumGrey),
+                          onCompleted: viewModel.onPinCompletedHandler,
+                          onChanged: viewModel.onChangePinHandler),
                     ],
                   ),
                 ),
                 verticalSpaceMedium,
                 PrimarySubmitButton(
                   buttonText: "Verify number",
-                  onTap: viewModel.navigateToDashboardView,
+                  onTap: viewModel.verifyOtpHandler,
                 ),
-                const InfoMessage(
-                  infoText: "Already a memeber?",
-                  actionString: "Sign in here",
-                ),
+                // const InfoMessage(
+                //   infoText: "Already a memeber?",
+                //   actionString: "Sign in here",
+                // ),
               ],
             ),
             const SwechaFooter()

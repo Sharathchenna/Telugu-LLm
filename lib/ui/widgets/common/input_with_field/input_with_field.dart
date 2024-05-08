@@ -11,11 +11,13 @@ class InputWithField extends StackedView<InputWithFieldModel> {
   final String labelName;
   final TextEditingController textController;
   final FocusNode focusNode;
+  final TextInputType textInputType;
   const InputWithField(
       {required this.labelName,
       required this.fieldLabel,
       required this.textController,
       required this.focusNode,
+      this.textInputType = TextInputType.text,
       super.key});
 
   @override
@@ -43,8 +45,10 @@ class InputWithField extends StackedView<InputWithFieldModel> {
           ),
           verticalSpaceTiny,
           TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: textController,
             focusNode: focusNode,
+            keyboardType: textInputType,
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.never,
               labelText: fieldLabel,

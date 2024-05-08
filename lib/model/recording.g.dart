@@ -19,14 +19,16 @@ class RecordingAdapter extends TypeAdapter<Recording> {
     return Recording(
       path: fields[2] as String,
       name: fields[3] as String,
-      uploadedStatus: fields[4] as bool,
-    )..id = fields[1] as String?;
+      status: fields[4] as String,
+      totalTime: fields[5] as String,
+      id: fields[1] as String?,
+    );
   }
 
   @override
   void write(BinaryWriter writer, Recording obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(1)
       ..write(obj.id)
       ..writeByte(2)
@@ -34,7 +36,9 @@ class RecordingAdapter extends TypeAdapter<Recording> {
       ..writeByte(3)
       ..write(obj.name)
       ..writeByte(4)
-      ..write(obj.uploadedStatus);
+      ..write(obj.status)
+      ..writeByte(5)
+      ..write(obj.totalTime);
   }
 
   @override

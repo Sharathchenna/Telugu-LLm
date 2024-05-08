@@ -12,7 +12,10 @@ class CategoryDetailModel extends ReactiveViewModel {
   @override
   List<ListenableServiceMixin> get listenableServices => [_categoryService];
 
-  void toggleCard() => _categoryService.toggleCard();
+  void toggleCard() {
+    _categoryService.toggleCard();
+    _categoryService.selectedCategoryId = "";
+  }
 
   void fetchCategoryDetails() {
     categoryDataItem

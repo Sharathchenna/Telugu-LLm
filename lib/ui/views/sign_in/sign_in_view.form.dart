@@ -8,6 +8,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:swaram_ai/ui/common/form_validation.dart';
 
 const bool _autoTextFieldValidation = true;
 
@@ -19,8 +20,8 @@ final Map<String, TextEditingController> _SignInViewTextEditingControllers = {};
 final Map<String, FocusNode> _SignInViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?> _SignInViewTextValidations = {
-  UserNameValueKey: null,
-  PhoneNumberValueKey: null,
+  UserNameValueKey: FormValidation.validateEmptyValue,
+  PhoneNumberValueKey: FormValidation.validatePhoneNumber,
 };
 
 mixin $SignInView {

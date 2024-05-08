@@ -11,6 +11,10 @@ import 'package:swaram_ai/services/auth_service.dart';
 import 'package:swaram_ai/services/client_service.dart';
 import 'package:swaram_ai/services/record_service.dart';
 import 'package:swaram_ai/services/category_service.dart';
+import 'package:swaram_ai/services/network_service.dart';
+import 'package:swaram_ai/ui/views/memo/memo_view.dart';
+import 'package:swaram_ai/services/hive_service.dart';
+import 'package:swaram_ai/ui/bottom_sheets/sucess/sucess_sheet.dart';
 // @stacked-import
 
 @StackedApp(
@@ -22,6 +26,7 @@ import 'package:swaram_ai/services/category_service.dart';
       page: OtpView,
     ),
     MaterialRoute(page: DashboardView),
+    MaterialRoute(page: MemoView),
 // @stacked-route
   ],
   dependencies: [
@@ -33,11 +38,14 @@ import 'package:swaram_ai/services/category_service.dart';
     LazySingleton(classType: ClientService),
     LazySingleton(classType: RecordService),
     LazySingleton(classType: CategoryService),
+    LazySingleton(classType: NetworkService),
+    LazySingleton(classType: HiveService),
 // @stacked-service
   ],
   bottomsheets: [
     StackedBottomsheet(classType: NoticeSheet),
-    // @stacked-bottom-sheet
+    StackedBottomsheet(classType: SuccessSheet),
+// @stacked-bottom-sheet
   ],
   dialogs: [
     StackedDialog(classType: InfoAlertDialog),

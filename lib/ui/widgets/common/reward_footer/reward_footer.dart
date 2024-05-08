@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
-import 'package:swaram_ai/ui/common/ui_helpers.dart';
-import 'package:swaram_ai/ui/widgets/common/reward_container/reward_container.dart';
 
 import 'reward_footer_model.dart';
 
@@ -15,22 +12,7 @@ class RewardFooter extends StackedView<RewardFooterModel> {
     RewardFooterModel viewModel,
     Widget? child,
   ) {
-    return const Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RewardContainer(
-            iconData: FontAwesomeIcons.crown,
-            reward: "23",
-            footeText: "Hours of voice"),
-        horizontalSpaceSmall,
-        RewardContainer(
-            iconData: Icons.stars_rounded,
-            reward: "234",
-            footeText: "Credit score"),
-      ],
-    );
+    return viewModel.getFooterWidget();
   }
 
   @override

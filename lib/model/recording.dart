@@ -14,8 +14,15 @@ class Recording extends HiveObject {
   String name;
 
   @HiveField(4)
-  bool uploadedStatus;
+  String status;
+
+  @HiveField(5)
+  String totalTime;
 
   Recording(
-      {required this.path, required this.name, required this.uploadedStatus});
+      {required this.path,
+      required this.name,
+      required this.status,
+      required this.totalTime,
+      this.id});
 }

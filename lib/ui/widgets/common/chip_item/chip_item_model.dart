@@ -6,9 +6,7 @@ class ChipItemModel extends ReactiveViewModel {
   final _categoryService = locator<CategoryService>();
 
   @override
-  List<ListenableServiceMixin> get listenableServices {
-    return [_categoryService];
-  }
+  List<ListenableServiceMixin> get listenableServices => [_categoryService];
 
   void toggleChipCard(String id) {
     _categoryService.selectedCategoryId = id;

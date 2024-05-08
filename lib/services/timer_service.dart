@@ -1,15 +1,14 @@
 import 'dart:async';
-import 'package:appwrite/appwrite.dart';
-import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:swaram_ai/app/app.bottomsheets.dart';
 import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.logger.dart';
 import 'package:swaram_ai/model/recording.dart';
-import 'package:swaram_ai/services/record_service.dart';
-import 'package:swaram_ai/ui/common/app_hive.dart';
+import 'package:swaram_ai/services/hive_service.dart';
+import 'package:swaram_ai/ui/common/app_strings.dart';
 
 class TimerService with ListenableServiceMixin {
   final _recordingStarted = ReactiveValue<bool>(false);
@@ -19,9 +18,11 @@ class TimerService with ListenableServiceMixin {
   final _recorder = AudioRecorder();
   final _volume = ReactiveValue<double>(0.0);
   final _minVolume = -45.0;
+  String fileName = "";
+
   final _logger = getLogger("TimerService");
-  final _bottomsheet = locator<BottomSheetService>();
-  final _recordService = locator<RecordService>();
+  final _hiveService = locator<HiveService>();
+  final _bottomSheetService = locator<BottomSheetService>();
 
   Timer? _timer;
 
@@ -41,22 +42,36 @@ class TimerService with ListenableServiceMixin {
     ]);
   }
 
-  void _stopRecording() async {
+  Future<void> _stopRecording() async {
     _timer!.cancel();
     String? path = await _recorder.stop();
     _logger.i("recording file: $path");
 
-    var status = await _recordService.uploadRecording(
-        path!, "MyRecording_${ID.unique()}");
+    try {
+      _hiveService.saveRecordings(
+        recording: Recording(
+            id: fileName,
+            path: path!,
+            name: fileName,
+            status: onDevice,
+            totalTime:
+                "${_recordingHours.value}:${_recordingMinutes.value}:${_recordingSeconds.value}"),
+      );
 
-    _bottomsheet.showBottomSheet(
-      title: "Recording status",
-      description: status ? "Successfully saved" : "Something went wrong",
-    );
+      _bottomSheetService.showCustomSheet(
+          variant: BottomSheetType.success, description: "Your audio is saved");
+    } catch (e) {
+      _logger.e("Saving the recording in local failed: ${e.toString()}");
+    }
+
+    // var status = await _recordService.uploadRecording(
+    //     path!, "MyRecording_${ID.unique()}");
+
     _recordingSeconds.value = 0;
     _recordingMinutes.value = 0;
     _recordingHours.value = 0;
     _recordingStarted.value = false;
+    fileName = "";
 
     notifyListeners();
   }
@@ -73,14 +88,15 @@ class TimerService with ListenableServiceMixin {
     return directory.path;
   }
 
-  void _startRecording() async {
+  Future<void> _startRecording() async {
     _logger.i("Start recording is being called");
     if (await _recorder.hasPermission()) {
       _logger.i("User granted the microphone permission");
       if (!await _recorder.isRecording()) {
         final path = await _localPath;
+        fileName = "MyRecording_${DateTime.now().millisecondsSinceEpoch}";
         await _recorder.start(const RecordConfig(),
-            path: "$path/recoding_${ID.unique()}.m4a");
+            path: "$path/$fileName.m4a");
       }
 
       _recordingStarted.value = await _recorder.isRecording();
@@ -104,14 +120,14 @@ class TimerService with ListenableServiceMixin {
         _recordingSeconds.value = localSeconds;
         _recordingMinutes.value = localMinutes;
         _recordingHours.value = localHours;
-        _updateVolume();
+        // _updateVolume();
       });
     }
     notifyListeners();
   }
 
-  startOrStopRecording() {
-    isRecordingStarted ? _stopRecording() : _startRecording();
+  Future<void> startOrStopRecording() async {
+    isRecordingStarted ? await _stopRecording() : await _startRecording();
   }
 
   bool dispose() {

@@ -31,14 +31,12 @@ class ChipItem extends StackedView<ChipItemModel> {
             fontWeight: FontWeight.w500,
           ),
         ),
+        style: FlexiChipStyle.outlined(),
         leading: Image.asset(
           imagePath,
           height: 24,
           width: 24,
           fit: BoxFit.cover,
-        ),
-        style: FlexiChipStyle.when(
-          enabled: FlexiChipStyle.outlined(),
         ),
         onPressed: () => viewModel.toggleChipCard(id),
       ),
