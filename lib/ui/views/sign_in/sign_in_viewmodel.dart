@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.locator.dart';
@@ -11,18 +13,23 @@ class SignInViewModel extends FormViewModel {
   final _authService = locator<AuthService>();
   final _logger = getLogger("SignIn ViewModel");
   bool isFormSubmitted = false;
+  bool isLoading = false;
 
   void signupAndNavigateToOtp() async {
     isFormSubmitted = true;
     if (isFormValid) {
+      isLoading = true;
+      rebuildUi();
       Map<String, dynamic> returnValue =
           await _authService.userAuth(userNameValue!, phoneNumberValue!);
       _logger.i(returnValue);
       if (returnValue["status"]) {
         _navigationService.navigateToOtpView(
             userId: returnValue["data"]["userId"]);
-      } else {}
+      } else {
+        isLoading = false;
+        rebuildUi();
+      }
     }
-    rebuildUi();
   }
 }

@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
+import 'package:swaram_ai/ui/widgets/common/chip_item/chip_item.dart';
 
 import 'category_model.dart';
 
@@ -46,10 +45,22 @@ class Category extends StackedView<CategoryModel> {
             dividedBy: 3,
           ),
           child: SingleChildScrollView(
-            child: Wrap(
-              spacing: screenWidthFraction(context, dividedBy: 20),
-              runSpacing: 15,
-              children: viewModel.categoryData,
+            child: FutureBuilder<List<ChipItem>>(
+              builder: (_, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else {
+                  return Wrap(
+                      spacing: screenWidthFraction(context, dividedBy: 20),
+                      runSpacing: 15,
+                      children: snapshot.data!);
+                }
+              },
+              future: viewModel.getCategoryData(),
             ),
           ),
         ),

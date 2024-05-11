@@ -39,7 +39,7 @@ import 'package:swaram_ai/ui/bottom_sheets/sucess/sucess_sheet.dart';
     LazySingleton(classType: RecordService),
     LazySingleton(classType: CategoryService),
     LazySingleton(classType: NetworkService),
-    LazySingleton(classType: HiveService),
+    LazySingleton(classType: HiveService)
 // @stacked-service
   ],
   bottomsheets: [

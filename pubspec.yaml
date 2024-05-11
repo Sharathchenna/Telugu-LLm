@@ -9,11 +9,11 @@ environment:
 dependencies:
   appwrite: ^12.0.1
   avatar_glow: ^3.0.1
+  awesome_snackbar_content: ^0.1.3
   connectivity_plus: ^6.0.3
   flexi_chip: ^1.0.8
   flutter:
     sdk: flutter
-  flutter_background_service: ^5.0.5
   flutter_svg: ^2.0.10+1
   font_awesome_flutter: ^10.7.0
   google_fonts: ^6.2.1

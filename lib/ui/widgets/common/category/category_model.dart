@@ -10,10 +10,15 @@ class CategoryModel extends BaseViewModel {
     _categoryService = locator<CategoryService>();
   }
 
-  // List<ChipItem> getCategoryData() async {
-  //   var categoriesList = await _categoryService.getCategories();
-  //   return categoriesList.map((e) => ChipItem(id: id, label: label, imagePath: imagePath))
-  // }
+  Future<List<ChipItem>> getCategoryData() async {
+    var categoriesList = await _categoryService.getCategories();
+    return categoriesList
+        .map((e) => ChipItem(
+            id: e["\$id"],
+            label: e["title"],
+            imagePath: "assets/icons/book_open.png"))
+        .toList();
+  }
 
   List<ChipItem> get categoryData {
     return categoryDataItem

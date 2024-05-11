@@ -122,6 +122,7 @@ class SignInView extends StackedView<SignInViewModel> with $SignInView {
                     ],
                     verticalSpaceMedium,
                     PrimarySubmitButton(
+                      isLoading: viewModel.isLoading,
                       buttonText: "Sign In",
                       onTap: viewModel.signupAndNavigateToOtp,
                     ),

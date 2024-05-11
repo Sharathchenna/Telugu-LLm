@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:stacked/stacked.dart';
@@ -17,7 +18,6 @@ class TimerService with ListenableServiceMixin {
   final _recordingSeconds = ReactiveValue<int>(0);
   final _recorder = AudioRecorder();
   final _volume = ReactiveValue<double>(0.0);
-  final _minVolume = -45.0;
   String fileName = "";
 
   final _logger = getLogger("TimerService");
@@ -76,13 +76,6 @@ class TimerService with ListenableServiceMixin {
     notifyListeners();
   }
 
-  void _updateVolume() async {
-    Amplitude ampl = await _recorder.getAmplitude();
-    if (ampl.current > _minVolume) {
-      _volume.value = (ampl.current - _minVolume) / _minVolume;
-    }
-  }
-
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
@@ -103,23 +96,30 @@ class TimerService with ListenableServiceMixin {
       _logger.d("Recording Started value: ${_recordingStarted.value}");
       _recordingSeconds.value = 1;
       _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-        int localSeconds = _recordingSeconds.value + 1;
-        int localMinutes = _recordingMinutes.value;
-        int localHours = _recordingHours.value;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          int localSeconds = _recordingSeconds.value + 1;
+          int localMinutes = _recordingMinutes.value;
+          int localHours = _recordingHours.value;
 
-        if (localSeconds > 59) {
-          if (localMinutes > 59) {
-            localHours++;
-            localMinutes = 0;
-          } else {
-            localMinutes++;
-            localSeconds = 0;
+          if (localSeconds > 59) {
+            if (localMinutes > 59) {
+              localHours++;
+              localMinutes = 0;
+            } else {
+              localMinutes++;
+              localSeconds = 0;
+            }
           }
-        }
 
-        _recordingSeconds.value = localSeconds;
-        _recordingMinutes.value = localMinutes;
-        _recordingHours.value = localHours;
+          if (localSeconds != _recordingSeconds.value ||
+              localMinutes != _recordingMinutes.value ||
+              localHours != _recordingHours.value) {
+            _recordingSeconds.value = localSeconds;
+            _recordingMinutes.value = localMinutes;
+            _recordingHours.value = localHours;
+            // _updateVolume();
+          }
+        });
         // _updateVolume();
       });
     }

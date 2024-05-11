@@ -10,7 +10,7 @@ import 'package:swaram_ai/ui/common/app_strings.dart';
 
 class CategoryService with ListenableServiceMixin {
   final _showFront = ReactiveValue<bool>(true);
-  final _logger = getLogger("Category Sevice");
+  final _logger = getLogger("Category Service");
   String selectedCategoryId = "";
   late Databases _databases;
   late HiveService _hiveService;
@@ -23,6 +23,8 @@ class CategoryService with ListenableServiceMixin {
       _showFront,
     ]);
     _hiveService = locator<HiveService>();
+    _networkService = locator<NetworkService>();
+    _databases = locator<ClientService>().getDatabase;
   }
 
   void toggleCard() {
@@ -30,8 +32,7 @@ class CategoryService with ListenableServiceMixin {
     notifyListeners();
   }
 
-  Future<List<Map<String, dynamic>>> getCategories() {
-    _networkService = locator<NetworkService>();
+  Future<List<Map<String, dynamic>>> getCategories() async {
     if (_networkService.hasConnection) {
       return _fetchCategoriesFromDb();
     }
@@ -40,13 +41,10 @@ class CategoryService with ListenableServiceMixin {
 
   Future<List<Map<String, dynamic>>> _fetchCategoriesFromDb() async {
     try {
-      _databases = locator<ClientService>().getDatabase;
-
       DocumentList documents = await _databases.listDocuments(
           databaseId: appWriteCategoriesDatabase,
           collectionId: appWriteCategoriesCollection);
       var categoriesList = _extractCategories(documents.documents);
-      _hiveService.saveCategories(categoriesList);
       _logger.i(categoriesList);
       return categoriesList;
     } catch (e) {
@@ -56,10 +54,6 @@ class CategoryService with ListenableServiceMixin {
   }
 
   List<Map<String, dynamic>> _extractCategories(List<Document> documentList) {
-    List<Map<String, dynamic>> categoriesList = [];
-    for (var element in documentList) {
-      categoriesList.add(element.data);
-    }
-    return categoriesList;
+    return documentList.map((element) => element.data).toList();
   }
 }

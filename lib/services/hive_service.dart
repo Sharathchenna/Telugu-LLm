@@ -8,7 +8,7 @@ class HiveService {
   final _updateInBox = ReactiveValue<bool>(false);
   final _logger = getLogger("Hive Service");
   late Box<Recording> _recordBox;
-  late Box<List<Map<String, dynamic>>> _categoryBox;
+  Box<List<Map<String, dynamic>>>? _categoryBox;
 
   bool get updateInBox => _updateInBox.value;
 
@@ -18,10 +18,12 @@ class HiveService {
         _recordBox = value;
       });
     }
+  }
+
+  void checkCategoryBoxAndOpen() async {
     if (!Hive.isBoxOpen(categoryBox)) {
-      Hive.openBox<List<Map<String, dynamic>>>(categoryBox).then((value) {
-        _categoryBox = value;
-      });
+      _categoryBox =
+          await Hive.openBox<List<Map<String, dynamic>>>(categoryBox);
     }
   }
 
@@ -43,9 +45,13 @@ class HiveService {
     }
   }
 
-  void saveCategories(List<Map<String, dynamic>> categories) =>
-      _categoryBox.put("categoriesList", categories);
+  void saveCategories(List<Map<String, dynamic>> categories) {
+    checkCategoryBoxAndOpen();
+    _categoryBox?.put("categoriesList", categories);
+  }
 
-  List<Map<String, dynamic>> getCategories() =>
-      _categoryBox.values.expand((element) => element).toList();
+  List<Map<String, dynamic>>? getCategories() {
+    checkCategoryBoxAndOpen();
+    return _categoryBox?.values.expand((element) => element).toList();
+  }
 }
