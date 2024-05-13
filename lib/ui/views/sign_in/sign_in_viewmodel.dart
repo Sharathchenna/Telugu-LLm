@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.locator.dart';

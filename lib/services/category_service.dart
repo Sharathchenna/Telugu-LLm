@@ -13,8 +13,10 @@ class CategoryService with ListenableServiceMixin {
   final _logger = getLogger("Category Service");
   String selectedCategoryId = "";
   late Databases _databases;
-  late HiveService _hiveService;
-  late NetworkService _networkService;
+  final HiveService _hiveService = locator<HiveService>();
+  final NetworkService _networkService = locator<NetworkService>();
+  final _clientService = locator<ClientService>();
+  List<Map<String, dynamic>> categoryData = [];
 
   bool get showFront => _showFront.value;
 
@@ -22,9 +24,7 @@ class CategoryService with ListenableServiceMixin {
     listenToReactiveValues([
       _showFront,
     ]);
-    _hiveService = locator<HiveService>();
-    _networkService = locator<NetworkService>();
-    _databases = locator<ClientService>().getDatabase;
+    _databases = _clientService.getDatabase;
   }
 
   void toggleCard() {
@@ -33,10 +33,14 @@ class CategoryService with ListenableServiceMixin {
   }
 
   Future<List<Map<String, dynamic>>> getCategories() async {
+    if (categoryData.isNotEmpty) {
+      return Future.value(categoryData);
+    }
     if (_networkService.hasConnection) {
       return _fetchCategoriesFromDb();
+    } else {
+      return Future.value(_hiveService.getCategories());
     }
-    return Future.value(_hiveService.getCategories());
   }
 
   Future<List<Map<String, dynamic>>> _fetchCategoriesFromDb() async {
@@ -45,7 +49,8 @@ class CategoryService with ListenableServiceMixin {
           databaseId: appWriteCategoriesDatabase,
           collectionId: appWriteCategoriesCollection);
       var categoriesList = _extractCategories(documents.documents);
-      _logger.i(categoriesList);
+      _hiveService.saveCategories(categoriesList);
+      categoryData = categoriesList;
       return categoriesList;
     } catch (e) {
       _logger.e("Something went wrong $e");
@@ -54,6 +59,7 @@ class CategoryService with ListenableServiceMixin {
   }
 
   List<Map<String, dynamic>> _extractCategories(List<Document> documentList) {
+    _logger.i(documentList);
     return documentList.map((element) => element.data).toList();
   }
 }

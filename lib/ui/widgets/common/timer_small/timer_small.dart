@@ -7,7 +7,12 @@ import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'timer_small_model.dart';
 
 class TimerSmall extends StackedView<TimerSmallModel> {
-  const TimerSmall({super.key});
+  final String seconds, minutes, hours;
+  const TimerSmall(
+      {super.key,
+      required this.seconds,
+      required this.minutes,
+      required this.hours});
 
   @override
   Widget builder(
@@ -40,7 +45,7 @@ class TimerSmall extends StackedView<TimerSmallModel> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(15, 0, 10, 0),
                         child: Text(
-                          viewModel.getDigitHours,
+                          hours,
                           style: GoogleFonts.montserrat(
                               fontSize: getResponsiveFontSize(context,
                                   fontSize: 40, max: 40),
@@ -63,7 +68,7 @@ class TimerSmall extends StackedView<TimerSmallModel> {
                   ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 20, 0),
-                    child: Text(viewModel.getDigitMinutes,
+                    child: Text(minutes,
                         style: GoogleFonts.montserrat(
                             fontSize: getResponsiveFontSize(context,
                                 fontSize: 40, max: 40),
@@ -83,7 +88,7 @@ class TimerSmall extends StackedView<TimerSmallModel> {
                   ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                    child: Text(viewModel.getDigitSeconds,
+                    child: Text(seconds,
                         style: GoogleFonts.montserrat(
                             fontSize: getResponsiveFontSize(context,
                                 fontSize: 40, max: 40),

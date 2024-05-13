@@ -13,12 +13,6 @@ class MyAppBar extends StackedView<MyAppBarModel>
   const MyAppBar({super.key});
 
   @override
-  void onViewModelReady(MyAppBarModel viewModel) {
-    viewModel.networkService.initConnectivity();
-    super.onViewModelReady(viewModel);
-  }
-
-  @override
   Widget builder(
     BuildContext context,
     MyAppBarModel viewModel,

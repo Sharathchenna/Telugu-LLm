@@ -17,7 +17,8 @@ class RewardFooterModel extends ReactiveViewModel {
 
   Widget getFooterWidget() {
     if (!_categoryService.showFront && _timerService.isRecordingStarted) {
-      return const TimerSmall();
+      // return const TimerSmall();
+      return Text("test");
     } else {
       return const Row(
         mainAxisSize: MainAxisSize.max,

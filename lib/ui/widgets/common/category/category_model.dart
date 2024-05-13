@@ -1,14 +1,13 @@
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/app/app.locator.dart';
+import 'package:swaram_ai/app/app.logger.dart';
 import 'package:swaram_ai/data/category_data.dart';
 import 'package:swaram_ai/services/category_service.dart';
 import 'package:swaram_ai/ui/widgets/common/chip_item/chip_item.dart';
 
 class CategoryModel extends BaseViewModel {
-  late CategoryService _categoryService;
-  CategoryModel() {
-    _categoryService = locator<CategoryService>();
-  }
+  final CategoryService _categoryService = locator<CategoryService>();
+  final _logger = getLogger("Category Model");
 
   Future<List<ChipItem>> getCategoryData() async {
     var categoriesList = await _categoryService.getCategories();

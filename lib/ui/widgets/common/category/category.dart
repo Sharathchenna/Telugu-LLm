@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
+import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'package:swaram_ai/ui/widgets/common/chip_item/chip_item.dart';
 
@@ -16,7 +17,6 @@ class Category extends StackedView<CategoryModel> {
     Widget? child,
   ) {
     return Column(
-      key: const ValueKey(true),
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -49,7 +49,9 @@ class Category extends StackedView<CategoryModel> {
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: kcPrimaryBlueColor,
+                    ),
                   );
                 } else if (snapshot.hasError) {
                   return Text("Error: ${snapshot.error}");

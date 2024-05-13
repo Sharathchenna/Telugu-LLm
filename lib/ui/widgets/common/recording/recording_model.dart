@@ -1,31 +1,56 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:camera/camera.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:swaram_ai/app/app.dialogs.dart';
 import 'package:swaram_ai/app/app.locator.dart';
+import 'package:swaram_ai/app/app.logger.dart';
+import 'package:swaram_ai/app/app.router.dart';
 import 'package:swaram_ai/services/category_service.dart';
 import 'package:swaram_ai/services/timer_service.dart';
+import 'package:swaram_ai/ui/common/snack_bar.dart';
 
 class RecordingModel extends ReactiveViewModel {
   final _timerService = locator<TimerService>();
   final _categoryService = locator<CategoryService>();
   bool get isRecordStarted => _timerService.isRecordingStarted;
   bool showProgress = false;
+  final _dialogService = locator<DialogService>();
+  final _logger = getLogger("Recording Model");
+
+  final _navigationService = locator<NavigationService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
       [_timerService, _categoryService];
 
   toggleRecording() async {
-    toggleProgress();
-    await _timerService.startOrStopRecording();
-    toggleProgress();
+    if (!isRecordStarted) {
+      // DialogResponse<bool>? isVideoRequested =
+      //     await _dialogService.showCustomDialog(
+      //         variant: DialogType.confirm,
+      //         title: "You can record video too!",
+      //         description:
+      //             "Video recording is available. Do you want to access camera and start recording?",
+      //         mainButtonTitle: "Access camera",
+      //         barrierDismissible: true,
+      //         useSafeArea: true,
+      //         secondaryButtonTitle: "Maybe later");
+      // _navigationService.navigateToVideoRecordingView();
+      // if (!isVideoRequested!.data!) {
+      toggleProgress();
+      await _timerService.startOrStopRecording();
+      toggleProgress();
+      // } else {
+      //   _logger.i("Video requestd");
+      //   _timerService.videoRecordingStarted = true;
+      // }
+    }
   }
 
   toggleProgress() {
     showProgress = !showProgress;
     rebuildUi();
-  }
-
-  int volume0to(int maxVolumeToDisplay) {
-    return (_timerService.getVolume * maxVolumeToDisplay).round().abs();
   }
 
   String get headerText => _categoryService.showFront

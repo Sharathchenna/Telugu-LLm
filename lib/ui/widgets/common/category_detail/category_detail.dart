@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
@@ -37,14 +39,14 @@ class CategoryDetail extends StackedView<CategoryDetailModel> {
               ),
             ),
             horizontalSpaceSmall,
-            Text(
-              "Fables",
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: GoogleFonts.montserrat(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: kcTextDarkColor),
+            Expanded(
+              child: Text(
+                viewModel.title,
+                style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: kcTextDarkColor),
+              ),
             ),
           ],
         ),
@@ -52,7 +54,7 @@ class CategoryDetail extends StackedView<CategoryDetailModel> {
           height: screenHeightFraction(context, dividedBy: 3),
           child: SingleChildScrollView(
             child: Text(
-              "Fables are short stories with animals as characters, teaching moral lessons. They're easy to understand and often have a clear message about how to behave. These stories have been passed down through generations and across cultures, teaching valuable lessons about honesty, perseverance, and wisdom. Most famous examples are, tales like \"The Tortoise and the Hare\" and \"The Boy Who Cried Wolf.",
+              viewModel.description,
               overflow: TextOverflow.clip,
               maxLines: null,
               style: GoogleFonts.montserrat(

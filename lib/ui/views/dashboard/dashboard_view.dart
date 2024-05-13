@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'package:swaram_ai/ui/widgets/common/my_app_bar/my_app_bar.dart';
 import 'package:swaram_ai/ui/widgets/common/recording/recording.dart';

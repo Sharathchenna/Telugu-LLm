@@ -13,37 +13,26 @@ import 'package:swaram_ai/ui/common/app_strings.dart';
 
 class TimerService with ListenableServiceMixin {
   final _recordingStarted = ReactiveValue<bool>(false);
-  final _recordingHours = ReactiveValue<int>(0);
-  final _recordingMinutes = ReactiveValue<int>(0);
-  final _recordingSeconds = ReactiveValue<int>(0);
-  final _recorder = AudioRecorder();
-  final _volume = ReactiveValue<double>(0.0);
+  final _videoRecordigStarted = ReactiveValue<bool>(false);
+
+  late final AudioRecorder _recorder;
   String fileName = "";
 
   final _logger = getLogger("TimerService");
   final _hiveService = locator<HiveService>();
   final _bottomSheetService = locator<BottomSheetService>();
 
-  Timer? _timer;
-
   bool get isRecordingStarted => _recordingStarted.value;
-  int get getRecordedHours => _recordingHours.value;
-  int get getRecordedMinutes => _recordingMinutes.value;
-  int get getRecordedSeconds => _recordingSeconds.value;
-  double get getVolume => _volume.value;
+
+  // void setRecordingStatus(bool status) => _recordingStarted.value = status;
 
   TimerService() {
-    listenToReactiveValues([
-      _recordingStarted,
-      _recordingHours,
-      _recordingMinutes,
-      _recordingSeconds,
-      _volume
-    ]);
+    listenToReactiveValues([_recordingStarted]);
+    _recorder = AudioRecorder();
   }
 
   Future<void> _stopRecording() async {
-    _timer!.cancel();
+    startOrStopRecording();
     String? path = await _recorder.stop();
     _logger.i("recording file: $path");
 
@@ -54,8 +43,7 @@ class TimerService with ListenableServiceMixin {
             path: path!,
             name: fileName,
             status: onDevice,
-            totalTime:
-                "${_recordingHours.value}:${_recordingMinutes.value}:${_recordingSeconds.value}"),
+            totalTime: ""),
       );
 
       _bottomSheetService.showCustomSheet(
@@ -67,9 +55,6 @@ class TimerService with ListenableServiceMixin {
     // var status = await _recordService.uploadRecording(
     //     path!, "MyRecording_${ID.unique()}");
 
-    _recordingSeconds.value = 0;
-    _recordingMinutes.value = 0;
-    _recordingHours.value = 0;
     _recordingStarted.value = false;
     fileName = "";
 
@@ -94,37 +79,46 @@ class TimerService with ListenableServiceMixin {
 
       _recordingStarted.value = await _recorder.isRecording();
       _logger.d("Recording Started value: ${_recordingStarted.value}");
-      _recordingSeconds.value = 1;
-      _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          int localSeconds = _recordingSeconds.value + 1;
-          int localMinutes = _recordingMinutes.value;
-          int localHours = _recordingHours.value;
-
-          if (localSeconds > 59) {
-            if (localMinutes > 59) {
-              localHours++;
-              localMinutes = 0;
-            } else {
-              localMinutes++;
-              localSeconds = 0;
-            }
-          }
-
-          if (localSeconds != _recordingSeconds.value ||
-              localMinutes != _recordingMinutes.value ||
-              localHours != _recordingHours.value) {
-            _recordingSeconds.value = localSeconds;
-            _recordingMinutes.value = localMinutes;
-            _recordingHours.value = localHours;
-            // _updateVolume();
-          }
-        });
-        // _updateVolume();
-      });
+      startOrStopRecording();
     }
     notifyListeners();
   }
+
+  // void startOrStopTimer() {
+  //   if (_timer!.isActive) {
+  //     _timer!.cancel();
+  //   } else {
+  //     _recordingSeconds.value = 1;
+  //     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+  //       WidgetsBinding.instance.addPostFrameCallback((_) {
+  //         int localSeconds = _recordingSeconds.value + 1;
+  //         int localMinutes = _recordingMinutes.value;
+  //         int localHours = _recordingHours.value;
+
+  //         if (localSeconds > 59) {
+  //           if (localMinutes > 59) {
+  //             localHours++;
+  //             localMinutes = 0;
+  //           } else {
+  //             localMinutes++;
+  //             localSeconds = 0;
+  //           }
+  //         }
+
+  //         if (localSeconds != _recordingSeconds.value ||
+  //             localMinutes != _recordingMinutes.value ||
+  //             localHours != _recordingHours.value) {
+  //           _recordingSeconds.value = localSeconds;
+  //           _recordingMinutes.value = localMinutes;
+  //           _recordingHours.value = localHours;
+  //           // _updateVolume();
+  //         }
+  //       });
+  //       // _updateVolume();
+  //     });
+  //   }
+  //   notifyListeners();
+  // }
 
   Future<void> startOrStopRecording() async {
     isRecordingStarted ? await _stopRecording() : await _startRecording();

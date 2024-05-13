@@ -9,6 +9,7 @@ class SnackBarHelper {
       required ContentType contentType}) {
     final snackBarKey = locator<GlobalKey<ScaffoldMessengerState>>();
     final snackBarContent = SnackBar(
+        duration: const Duration(seconds: 5),
         elevation: 0,
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.transparent,

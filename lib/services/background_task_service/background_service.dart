@@ -12,7 +12,6 @@ class BackgroundService {
   final _logger = getLogger("Background service");
 
   void init() async {
-    await _networkService.initConnectivity();
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       // _logger.i("Running | Background Service | ${timer.tick}");
       if (_networkService.hasConnection) {

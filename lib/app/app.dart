@@ -15,6 +15,9 @@ import 'package:swaram_ai/services/network_service.dart';
 import 'package:swaram_ai/ui/views/memo/memo_view.dart';
 import 'package:swaram_ai/services/hive_service.dart';
 import 'package:swaram_ai/ui/bottom_sheets/sucess/sucess_sheet.dart';
+import 'package:swaram_ai/ui/dialogs/confirm/confirm_dialog.dart';
+import 'package:swaram_ai/services/stopwatch_service.dart';
+import 'package:swaram_ai/ui/views/video_recording/video_recording_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -27,6 +30,7 @@ import 'package:swaram_ai/ui/bottom_sheets/sucess/sucess_sheet.dart';
     ),
     MaterialRoute(page: DashboardView),
     MaterialRoute(page: MemoView),
+    MaterialRoute(page: VideoRecordingView),
 // @stacked-route
   ],
   dependencies: [
@@ -39,7 +43,8 @@ import 'package:swaram_ai/ui/bottom_sheets/sucess/sucess_sheet.dart';
     LazySingleton(classType: RecordService),
     LazySingleton(classType: CategoryService),
     LazySingleton(classType: NetworkService),
-    LazySingleton(classType: HiveService)
+    LazySingleton(classType: HiveService),
+    LazySingleton(classType: StopwatchService),
 // @stacked-service
   ],
   bottomsheets: [
@@ -49,7 +54,8 @@ import 'package:swaram_ai/ui/bottom_sheets/sucess/sucess_sheet.dart';
   ],
   dialogs: [
     StackedDialog(classType: InfoAlertDialog),
-    // @stacked-dialog
+    StackedDialog(classType: ConfirmDialog),
+// @stacked-dialog
   ],
 )
 class App {}
