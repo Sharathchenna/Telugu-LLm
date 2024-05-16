@@ -19,10 +19,14 @@ class Recording extends HiveObject {
   @HiveField(5)
   String totalTime;
 
+  @HiveField(6, defaultValue: false)
+  bool isVideo;
+
   Recording(
       {required this.path,
       required this.name,
       required this.status,
       required this.totalTime,
+      this.isVideo = false,
       this.id});
 }

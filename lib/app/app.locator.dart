@@ -6,6 +6,7 @@
 
 // ignore_for_file: public_member_api_docs, implementation_imports, depend_on_referenced_packages
 
+import 'package:record/src/record.dart';
 import 'package:stacked_services/src/bottom_sheet/bottom_sheet_service.dart';
 import 'package:stacked_services/src/dialog/dialog_service.dart';
 import 'package:stacked_services/src/navigation/navigation_service.dart';
@@ -42,4 +43,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => NetworkService());
   locator.registerLazySingleton(() => HiveService());
   locator.registerLazySingleton(() => StopwatchService());
+  locator.registerLazySingleton(() => AudioRecorder());
 }

@@ -50,7 +50,6 @@ class VideoRecordingView extends StackedView<VideoRecordingViewModel> {
                     ],
                   )
                 : Stack(
-                    fit: StackFit.loose,
                     children: [
                       viewModel.isCameraInitialized
                           ? AspectRatio(
@@ -73,8 +72,8 @@ class VideoRecordingView extends StackedView<VideoRecordingViewModel> {
                           childWidget: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Visibility(
-                                visible: viewModel.isOverlayOpen,
+                              Offstage(
+                                offstage: !viewModel.isOverlayOpen,
                                 child: GestureDetector(
                                   onTap: viewModel.videoTapHandler,
                                   child: Stack(
@@ -128,8 +127,8 @@ class VideoRecordingView extends StackedView<VideoRecordingViewModel> {
                                   ),
                                 ),
                               ),
-                              Visibility(
-                                visible: viewModel.isOverlayOpen,
+                              Offstage(
+                                offstage: !viewModel.isOverlayOpen,
                                 child: Text(
                                   viewModel.isRecordingInProgress
                                       ? 'Tap to stop recording'
@@ -139,13 +138,10 @@ class VideoRecordingView extends StackedView<VideoRecordingViewModel> {
                                       color: kcBackgroundColor),
                                 ),
                               ),
-                              Visibility(
-                                  visible: viewModel.isOverlayOpen,
-                                  child: TimerSmall(
-                                    seconds: viewModel.seconds,
-                                    minutes: viewModel.minutes,
-                                    hours: viewModel.hours,
-                                  ))
+                              Offstage(
+                                offstage: !viewModel.isOverlayOpen,
+                                child: const TimerSmall(),
+                              )
                             ],
                           ),
                         ),

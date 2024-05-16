@@ -26,7 +26,7 @@ class DraggableSheet extends StackedView<DraggableSheetModel> {
         duration: const Duration(milliseconds: 300),
         height: isOpen
             ? screenHeight(context) * 0.26
-            : screenHeight(context) * 0.035,
+            : screenHeight(context) * 0.03,
         decoration: const BoxDecoration(
           color: Colors.transparent,
         ),

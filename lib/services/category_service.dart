@@ -33,13 +33,21 @@ class CategoryService with ListenableServiceMixin {
   }
 
   Future<List<Map<String, dynamic>>> getCategories() async {
+    _logger.d("Inside the getcategories function");
     if (categoryData.isNotEmpty) {
+      _logger.d(categoryData);
       return Future.value(categoryData);
     }
+    _logger.d("Network Service: ${_networkService.hasConnection}");
     if (_networkService.hasConnection) {
+      _logger.d("Getting data from db");
       return _fetchCategoriesFromDb();
     } else {
-      return Future.value(_hiveService.getCategories());
+      _logger.d("Getting data from local storage");
+      await _hiveService.initAll();
+      var value = _hiveService.getCategories();
+      _logger.i(value);
+      return Future.value(value);
     }
   }
 
@@ -58,8 +66,6 @@ class CategoryService with ListenableServiceMixin {
     }
   }
 
-  List<Map<String, dynamic>> _extractCategories(List<Document> documentList) {
-    _logger.i(documentList);
-    return documentList.map((element) => element.data).toList();
-  }
+  List<Map<String, dynamic>> _extractCategories(List<Document> documentList) =>
+      documentList.map((element) => element.data).toList();
 }

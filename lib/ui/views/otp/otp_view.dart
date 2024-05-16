@@ -105,6 +105,7 @@ class OtpView extends StackedView<OtpViewModel> {
                 ),
                 verticalSpaceMedium,
                 PrimarySubmitButton(
+                  isLoading: viewModel.isLoading,
                   buttonText: "Verify number",
                   onTap: viewModel.verifyOtpHandler,
                 ),

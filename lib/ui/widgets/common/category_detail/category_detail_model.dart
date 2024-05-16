@@ -23,6 +23,7 @@ class CategoryDetailModel extends ReactiveViewModel {
   }
 
   void fetchCategoryDetails() {
+    _logger.d("Fetch category method called");
     var item = _categoryService.categoryData.firstWhere(
         (element) => element["\$id"] == _categoryService.selectedCategoryId);
     title = item["title"];

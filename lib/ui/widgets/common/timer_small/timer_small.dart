@@ -7,12 +7,7 @@ import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'timer_small_model.dart';
 
 class TimerSmall extends StackedView<TimerSmallModel> {
-  final String seconds, minutes, hours;
-  const TimerSmall(
-      {super.key,
-      required this.seconds,
-      required this.minutes,
-      required this.hours});
+  const TimerSmall({super.key});
 
   @override
   Widget builder(
@@ -45,7 +40,7 @@ class TimerSmall extends StackedView<TimerSmallModel> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(15, 0, 10, 0),
                         child: Text(
-                          hours,
+                          viewModel.hours,
                           style: GoogleFonts.montserrat(
                               fontSize: getResponsiveFontSize(context,
                                   fontSize: 40, max: 40),
@@ -68,7 +63,7 @@ class TimerSmall extends StackedView<TimerSmallModel> {
                   ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 20, 0),
-                    child: Text(minutes,
+                    child: Text(viewModel.minutes,
                         style: GoogleFonts.montserrat(
                             fontSize: getResponsiveFontSize(context,
                                 fontSize: 40, max: 40),
@@ -88,7 +83,7 @@ class TimerSmall extends StackedView<TimerSmallModel> {
                   ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                    child: Text(seconds,
+                    child: Text(viewModel.seconds,
                         style: GoogleFonts.montserrat(
                             fontSize: getResponsiveFontSize(context,
                                 fontSize: 40, max: 40),
@@ -102,21 +97,21 @@ class TimerSmall extends StackedView<TimerSmallModel> {
               padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 7, 7),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('Hh',
+                  Text(' Hh',
                       style: GoogleFonts.montserrat(
                           fontSize: getResponsiveFontSize(context,
                               fontSize: 30, max: 30),
                           fontWeight: FontWeight.w500,
                           color: kcTextDark2)),
-                  Text('Mn',
+                  Text(' Mn',
                       style: GoogleFonts.montserrat(
                           fontSize: getResponsiveFontSize(context,
                               fontSize: 30, max: 30),
                           fontWeight: FontWeight.w500,
                           color: kcTextDark2)),
-                  Text('Sc',
+                  Text('  Sc',
                       style: GoogleFonts.montserrat(
                           fontSize: getResponsiveFontSize(context,
                               fontSize: 30, max: 30),

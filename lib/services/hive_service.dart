@@ -7,34 +7,32 @@ import 'package:swaram_ai/ui/common/app_hive.dart';
 class HiveService {
   final _updateInBox = ReactiveValue<bool>(false);
   final _logger = getLogger("Hive Service");
+
   late Box<Recording> _recordBox;
-  Box<List<Map<String, dynamic>>>? _categoryBox;
+  late Box<List<Map<String, dynamic>>> _categoryBox;
+
+  HiveService() {
+    _initBoxes();
+  }
+
+  Future<void> initAll() async {
+    await _initBoxes();
+  }
+
+  Future<void> _initBoxes() async {
+    _recordBox = await Hive.openBox<Recording>(recordingBox);
+    _categoryBox = await Hive.openBox<List<Map<String, dynamic>>>(categoryBox);
+  }
 
   bool get updateInBox => _updateInBox.value;
 
-  HiveService() {
-    if (!Hive.isBoxOpen(recordingBox)) {
-      Hive.openBox<Recording>(recordingBox).then((value) {
-        _recordBox = value;
-      });
-    }
-  }
-
-  void checkCategoryBoxAndOpen() async {
-    if (!Hive.isBoxOpen(categoryBox)) {
-      _categoryBox =
-          await Hive.openBox<List<Map<String, dynamic>>>(categoryBox);
-    }
-  }
-
-  void saveRecordings({required Recording recording}) async {
-    _recordBox.put(recording.id, recording);
-    _logger.i("Added recording in local");
-  }
+  void saveRecordings({required Recording recording}) =>
+      _recordBox.put(recording.id, recording);
 
   Iterable<Recording> getSavedRecordings() => _recordBox.values;
 
-  bool updateValue({required String key, required Recording updatedValue}) {
+  Future<bool> updateValue(
+      {required String key, required Recording updatedValue}) async {
     Recording? recording = _recordBox.get(key);
     if (recording != null) {
       _recordBox.put(key, updatedValue);
@@ -45,13 +43,9 @@ class HiveService {
     }
   }
 
-  void saveCategories(List<Map<String, dynamic>> categories) {
-    checkCategoryBoxAndOpen();
-    _categoryBox?.put("categoriesList", categories);
-  }
+  void saveCategories(List<Map<String, dynamic>> categories) =>
+      _categoryBox.put("categoriesList", categories);
 
-  List<Map<String, dynamic>>? getCategories() {
-    checkCategoryBoxAndOpen();
-    return _categoryBox?.values.expand((element) => element).toList();
-  }
+  List<Map<String, dynamic>> getCategories() =>
+      _categoryBox.values.expand((element) => element).toList();
 }

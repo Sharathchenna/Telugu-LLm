@@ -79,9 +79,19 @@ class MemoView extends StackedView<MemoViewModel> {
                             shape: const Border(
                                 bottom: BorderSide(
                                     width: 0.3, color: kcDarkGreyColor)),
-                            trailing: const Icon(
-                              Icons.keyboard_arrow_down_outlined,
-                              color: kcPrimaryBlueColor,
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (snapshot.data!.elementAt(index).isVideo)
+                                  const Icon(
+                                    Icons.video_file_outlined,
+                                    color: kcDarkGreyColor,
+                                  ),
+                                const Icon(
+                                  Icons.keyboard_arrow_down_outlined,
+                                  color: kcPrimaryBlueColor,
+                                ),
+                              ],
                             ),
                             leading: const Icon(
                               Icons.cloud_off,

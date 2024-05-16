@@ -4,11 +4,8 @@ import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:swaram_ai/ui/widgets/common/primary_submit_button/primary_submit_button.dart';
 
 import 'confirm_dialog_model.dart';
-
-const double _graphicSize = 60;
 
 class ConfirmDialog extends StackedView<ConfirmDialogModel> {
   final DialogRequest request;
@@ -71,10 +68,49 @@ class ConfirmDialog extends StackedView<ConfirmDialogModel> {
               ],
             ),
             verticalSpaceMedium,
-            PrimarySubmitButton(
-              buttonText: request.mainButtonTitle!,
-              onTap: () => completer(DialogResponse(confirmed: true)),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () =>
+                      completer(DialogResponse<bool>(confirmed: false)),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        color: kcBlueVeryLightColor,
+                      ),
+                    ),
+                    child: Text(
+                      request.secondaryButtonTitle!,
+                      style: GoogleFonts.montserrat(
+                          color: kcPrimaryBlueColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
+                    ),
+                  ),
+                ),
+                horizontalSpaceMedium,
+                InkWell(
+                  onTap: () => completer(DialogResponse<bool>(confirmed: true)),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: kcPrimaryBlueColor,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      request.mainButtonTitle!,
+                      style: GoogleFonts.montserrat(
+                          color: kcBackgroundColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

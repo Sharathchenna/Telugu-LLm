@@ -14,11 +14,13 @@ class StartupViewModel extends BaseViewModel {
     auth.clear();
     var authMap = auth.get("auth");
 
-    // if (authMap == null) {
-    //   _navigationService.replaceWithSignInView();
-    // } else {
-    //   _navigationService.replaceWithDashboardView();
-    // }
-    _navigationService.replaceWithDashboardView();
+    if (authMap == null) {
+      _navigationService.replaceWithSignInView();
+      return;
+    } else {
+      _navigationService.replaceWithDashboardView();
+    }
+
+    // _navigationService.replaceWithDashboardView();
   }
 }

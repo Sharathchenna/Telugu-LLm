@@ -1,6 +1,10 @@
 class StopwatchService {
   final Stopwatch _stopWatch = Stopwatch();
 
+  // Constants for time units
+  static const int secondsInMinutes = 60;
+  static const int minutesInHour = 60;
+
   void handleStartStop() {
     if (_stopWatch.isRunning) {
       _stopWatch.reset();
@@ -10,12 +14,16 @@ class StopwatchService {
   }
 
   Map<String, String> getTiming() {
-    var milli = _stopWatch.elapsed.inMilliseconds;
+    var elapsedSeconds = _stopWatch.elapsed.inSeconds;
+    var totalMinutes = elapsedSeconds ~/ secondsInMinutes;
+    var remainingSeconds = elapsedSeconds % secondsInMinutes;
+    var totalHours = totalMinutes ~/ minutesInHour;
+    var remainingMinutes = totalMinutes % minutesInHour;
 
     return {
-      "seconds": ((milli ~/ 1000) % 60).toString().padLeft(2, "0"),
-      "minutes": ((milli ~/ 1000) ~/ 60).toString().padLeft(2, "0"),
-      "hours": ((milli ~/ 1000) ~/ 60).toString().padLeft(2, "0")
+      "hours": totalHours.toString().padLeft(2, "0"),
+      "minutes": remainingMinutes.toString().padLeft(2, "0"),
+      "seconds": remainingSeconds.toString().padLeft(2, "0"),
     };
   }
 

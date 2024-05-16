@@ -1,3 +1,4 @@
+import 'package:record/record.dart';
 import 'package:swaram_ai/ui/bottom_sheets/notice/notice_sheet.dart';
 import 'package:swaram_ai/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:swaram_ai/ui/views/startup/startup_view.dart';
@@ -18,6 +19,7 @@ import 'package:swaram_ai/ui/bottom_sheets/sucess/sucess_sheet.dart';
 import 'package:swaram_ai/ui/dialogs/confirm/confirm_dialog.dart';
 import 'package:swaram_ai/services/stopwatch_service.dart';
 import 'package:swaram_ai/ui/views/video_recording/video_recording_view.dart';
+import 'package:swaram_ai/ui/views/memo_detail/memo_detail_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -31,6 +33,7 @@ import 'package:swaram_ai/ui/views/video_recording/video_recording_view.dart';
     MaterialRoute(page: DashboardView),
     MaterialRoute(page: MemoView),
     MaterialRoute(page: VideoRecordingView),
+    MaterialRoute(page: MemoDetailView),
 // @stacked-route
   ],
   dependencies: [
@@ -45,6 +48,7 @@ import 'package:swaram_ai/ui/views/video_recording/video_recording_view.dart';
     LazySingleton(classType: NetworkService),
     LazySingleton(classType: HiveService),
     LazySingleton(classType: StopwatchService),
+    LazySingleton(classType: AudioRecorder),
 // @stacked-service
   ],
   bottomsheets: [

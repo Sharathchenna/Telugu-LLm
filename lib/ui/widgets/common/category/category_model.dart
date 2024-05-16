@@ -10,7 +10,9 @@ class CategoryModel extends BaseViewModel {
   final _logger = getLogger("Category Model");
 
   Future<List<ChipItem>> getCategoryData() async {
+    _logger.d("get category data called");
     var categoriesList = await _categoryService.getCategories();
+    _logger.d(categoriesList);
     return categoriesList
         .map((e) => ChipItem(
             id: e["\$id"],

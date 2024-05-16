@@ -11,7 +11,10 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.logger.dart';
-import 'package:swaram_ai/services/stopwatch_service.dart';
+import 'package:swaram_ai/model/recording.dart';
+import 'package:swaram_ai/services/hive_service.dart';
+import 'package:swaram_ai/services/timer_service.dart';
+import 'package:swaram_ai/ui/common/app_strings.dart';
 
 import 'package:swaram_ai/ui/common/snack_bar.dart';
 
@@ -19,10 +22,8 @@ class VideoRecordingViewModel extends BaseViewModel
     with WidgetsBindingObserver {
   final Logger _logger = getLogger("Camera Screen Model");
   final _navigationService = locator<NavigationService>();
-
-  final StopwatchService _stopwatchService = locator<StopwatchService>();
-
-  Timer? _timer;
+  final _timerService = locator<TimerService>();
+  final _hiveService = locator<HiveService>();
 
   CameraController? controller;
 
@@ -33,8 +34,6 @@ class VideoRecordingViewModel extends BaseViewModel
   bool isRecordingInProgress = false;
   File _videoFile = File('');
   bool isCameraPermissionGranted = false;
-
-  String seconds = "00", minutes = "00", hours = "00";
 
   VideoRecordingViewModel() {
     getPermissionStatus();
@@ -49,7 +48,6 @@ class VideoRecordingViewModel extends BaseViewModel
       _logger.i('Camera Permission: GRANTED');
       _logger.i('Microphone Permission: GRANTED');
       isCameraPermissionGranted = true;
-      rebuildUi();
       availableCameras().then((value) {
         cameras = value;
         _logger.d(cameras);
@@ -116,24 +114,7 @@ class VideoRecordingViewModel extends BaseViewModel
           contentType: ContentType.failure);
     }
     isCameraInitialized = controller!.value.isInitialized;
-    rebuildUi();
-  }
-
-  void initializeCamera() async {
-    try {
-      cameras = await availableCameras();
-      _logger.d(cameras);
-      onNewCameraSelected(cameras[0]);
-    } on CameraException catch (error) {
-      _logger.e("Failed in fetching cameras: ${error.toString()}");
-      SnackBarHelper.showSnackBar(
-          message: "Error in fetching the cameras",
-          contentType: ContentType.failure);
-    } catch (error) {
-      _logger.e("Failed in fetching cameras: ${error.toString()}");
-      SnackBarHelper.showSnackBar(
-          message: "Something went wrong!", contentType: ContentType.failure);
-    }
+    // rebuildUi();
   }
 
   void toggleCameraHandler() {
@@ -154,7 +135,7 @@ class VideoRecordingViewModel extends BaseViewModel
     try {
       await cameraController!.startVideoRecording();
       isRecordingInProgress = true;
-      _startwatch();
+      _timerService.videoRecordingStarted = true;
       _logger.i(isRecordingInProgress);
 
       rebuildUi();
@@ -163,30 +144,6 @@ class VideoRecordingViewModel extends BaseViewModel
       SnackBarHelper.showSnackBar(
           message: "Something went wrong", contentType: ContentType.failure);
     }
-  }
-
-  void _startwatch() {
-    _stopwatchService.handleStartStop();
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      Map<String, String> timingData = _stopwatchService.getTiming();
-      seconds = timingData["seconds"]!;
-      minutes = timingData["minutes"]!;
-      hours = timingData["hours"]!;
-      rebuildUi();
-    });
-  }
-
-  void _stopwatch() {
-    _stopwatchService.handleStartStop();
-    _timer?.cancel();
-    _resetTime();
-  }
-
-  void _resetTime() {
-    seconds = "00";
-    minutes = "00";
-    hours = "00";
   }
 
   void closeTapHandler() {
@@ -201,7 +158,7 @@ class VideoRecordingViewModel extends BaseViewModel
     }
     try {
       XFile file = await controller!.stopVideoRecording();
-      _stopwatch();
+      _timerService.videoRecordingStarted = false;
       isRecordingInProgress = false;
       _logger.i(isRecordingInProgress);
       rebuildUi();
@@ -248,15 +205,29 @@ class VideoRecordingViewModel extends BaseViewModel
       File videoFile = File(rawVideo!.path);
 
       int currentUnix = DateTime.now().millisecondsSinceEpoch;
-      var fileName = "My Recording";
 
       final directory = await getApplicationDocumentsDirectory();
       String fileFormat = videoFile.path.split('.').last;
 
+      var fileName = "My Recording-$currentUnix";
+
       _videoFile = await videoFile.copy(
-        '${directory.path}/$fileName-$currentUnix.$fileFormat',
+        '${directory.path}/$fileName.$fileFormat',
       );
       _logger.i("Video File Path: $_videoFile");
+      _hiveService.saveRecordings(
+          recording: Recording(
+              id: fileName,
+              path: _videoFile.path,
+              name: fileName,
+              status: onDevice,
+              totalTime: "",
+              isVideo: true));
+
+      SnackBarHelper.showSnackBar(
+          title: "Video Saved",
+          message: "Your video has been successfuly saved!",
+          contentType: ContentType.success);
 
       // _startVideoPlayer();
     } else {
@@ -267,8 +238,6 @@ class VideoRecordingViewModel extends BaseViewModel
   @override
   void dispose() {
     controller?.dispose();
-
-    _timer?.cancel();
     super.dispose();
   }
 }

@@ -34,11 +34,13 @@ class Timer extends StackedView<TimerModel> {
       ),
       child: FittedBox(
         child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: kcBlueVeryLightColor),
           constraints: BoxConstraints(
             maxHeight: 160,
             maxWidth: screenWidth(context),
           ),
-          color: kcBlueLightColor,
           child: Center(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -49,7 +51,7 @@ class Timer extends StackedView<TimerModel> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildTimeText(context, viewModel.getDigitHours),
+                  _buildTimeText(context, viewModel.hours),
                   _buildSubHeadingText(context, "Hours")
                 ],
               ),
@@ -64,7 +66,7 @@ class Timer extends StackedView<TimerModel> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildTimeText(context, viewModel.getDigitMinutes),
+                  _buildTimeText(context, viewModel.minutes),
                   _buildSubHeadingText(context, "Minutes")
                 ],
               ),
@@ -79,7 +81,7 @@ class Timer extends StackedView<TimerModel> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildTimeText(context, viewModel.getDigitSeconds),
+                  _buildTimeText(context, viewModel.seconds),
                   _buildSubHeadingText(context, "Seconds")
                 ],
               )
