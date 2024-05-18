@@ -11,7 +11,7 @@ class StartupViewModel extends BaseViewModel {
   Future runStartupLogic() async {
     await Future.delayed(const Duration(seconds: 2));
     var auth = await Hive.openBox(authBox);
-    auth.clear();
+    // auth.clear();
     var authMap = auth.get("auth");
 
     if (authMap == null) {

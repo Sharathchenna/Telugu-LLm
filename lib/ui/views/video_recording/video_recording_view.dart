@@ -69,80 +69,83 @@ class VideoRecordingView extends StackedView<VideoRecordingViewModel> {
                         child: DraggableSheet(
                           isOpen: viewModel.isOverlayOpen,
                           onClose: viewModel.toggleOverlay,
-                          childWidget: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Offstage(
-                                offstage: !viewModel.isOverlayOpen,
-                                child: GestureDetector(
-                                  onTap: viewModel.videoTapHandler,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      AnimatedSwitcher(
-                                        duration: const Duration(
-                                          milliseconds: 300,
-                                        ),
-                                        child: viewModel.isRecordingInProgress
-                                            ? const Icon(
-                                                Icons.circle,
-                                                color: kcBackgroundColor,
-                                                size: 80,
-                                              )
-                                            : const Icon(
-                                                Icons.circle,
-                                                color: Colors.white38,
-                                                size: 80,
-                                              ),
+                          childWidget: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: viewModel.videoTapHandler,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          AnimatedSwitcher(
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
+                                            child: viewModel
+                                                    .isRecordingInProgress
+                                                ? const Icon(
+                                                    Icons.circle,
+                                                    color: kcBackgroundColor,
+                                                    size: 80,
+                                                  )
+                                                : const Icon(
+                                                    Icons.circle,
+                                                    color: Colors.white38,
+                                                    size: 80,
+                                                  ),
+                                          ),
+                                          AnimatedSwitcher(
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
+                                            child: viewModel
+                                                    .isRecordingInProgress
+                                                ? const Icon(
+                                                    Icons.circle,
+                                                    color: kcErrorColor,
+                                                    size: 65,
+                                                  )
+                                                : const Icon(
+                                                    Icons.circle,
+                                                    color: kcBackgroundColor,
+                                                    size: 65,
+                                                  ),
+                                          ),
+                                          AnimatedSwitcher(
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
+                                            child: viewModel
+                                                    .isRecordingInProgress
+                                                ? const Icon(
+                                                    Icons.stop_rounded,
+                                                    color: kcBackgroundColor,
+                                                    size: 32,
+                                                  )
+                                                : Container(),
+                                          ),
+                                        ],
                                       ),
-                                      AnimatedSwitcher(
-                                        duration: const Duration(
-                                          milliseconds: 300,
-                                        ),
-                                        child: viewModel.isRecordingInProgress
-                                            ? const Icon(
-                                                Icons.circle,
-                                                color: kcErrorColor,
-                                                size: 65,
-                                              )
-                                            : const Icon(
-                                                Icons.circle,
-                                                color: kcBackgroundColor,
-                                                size: 65,
-                                              ),
-                                      ),
-                                      AnimatedSwitcher(
-                                        duration: const Duration(
-                                          milliseconds: 300,
-                                        ),
-                                        child: viewModel.isRecordingInProgress
-                                            ? const Icon(
-                                                Icons.stop_rounded,
-                                                color: kcBackgroundColor,
-                                                size: 32,
-                                              )
-                                            : Container(),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    verticalSpaceTiny,
+                                    Text(
+                                      viewModel.isRecordingInProgress
+                                          ? 'Tap to stop recording'
+                                          : 'Tap to start recording',
+                                      style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w300,
+                                          color: kcBackgroundColor),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Offstage(
-                                offstage: !viewModel.isOverlayOpen,
-                                child: Text(
-                                  viewModel.isRecordingInProgress
-                                      ? 'Tap to stop recording'
-                                      : 'Tap to start recording',
-                                  style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.w300,
-                                      color: kcBackgroundColor),
-                                ),
-                              ),
-                              Offstage(
-                                offstage: !viewModel.isOverlayOpen,
-                                child: const TimerSmall(),
-                              )
-                            ],
+                                verticalSpace(screenHeight(context) * 0.032),
+                                const TimerSmall()
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -23,43 +23,45 @@ class DraggableSheet extends StackedView<DraggableSheetModel> {
     Widget? child,
   ) {
     return AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        height: isOpen
-            ? screenHeight(context) * 0.26
-            : screenHeight(context) * 0.03,
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
-        ),
-        child: Expanded(
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: onClose,
-                child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: Container(
-                      width: 40,
-                      height: 30,
-                      color: kcTextDarkColor,
-                      child: isOpen
-                          ? const Icon(
-                              Icons.arrow_drop_down_sharp,
-                              color: kcBackgroundColor,
-                              size: 30,
-                            )
-                          : const Icon(
-                              Icons.arrow_drop_up_sharp,
-                              color: kcBackgroundColor,
-                              size: 30,
-                            ),
-                    )),
+      duration: const Duration(milliseconds: 300),
+      height:
+          isOpen ? screenHeight(context) * 0.26 : screenHeight(context) * 0.03,
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+      ),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: onClose,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: Container(
+                width: 40,
+                height: 30,
+                color: kcTextDarkColor,
+                child: isOpen
+                    ? const Icon(
+                        Icons.arrow_drop_down_sharp,
+                        color: kcBackgroundColor,
+                        size: 30,
+                      )
+                    : const Icon(
+                        Icons.arrow_drop_up_sharp,
+                        color: kcBackgroundColor,
+                        size: 30,
+                      ),
               ),
-              Expanded(
-                child: Container(color: Colors.black45, child: childWidget),
-              ),
-            ],
+            ),
           ),
-        ));
+          Flexible(
+            child: Container(
+              color: Colors.black45,
+              child: childWidget,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
