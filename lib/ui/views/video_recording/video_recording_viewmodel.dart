@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -14,6 +15,8 @@ import 'package:swaram_ai/app/app.logger.dart';
 import 'package:swaram_ai/model/recording.dart';
 import 'package:swaram_ai/services/hive_service.dart';
 import 'package:swaram_ai/services/timer_service.dart';
+import 'package:swaram_ai/services/util_service.dart';
+import 'package:swaram_ai/ui/common/app_hive.dart';
 import 'package:swaram_ai/ui/common/app_strings.dart';
 
 import 'package:swaram_ai/ui/common/snack_bar.dart';
@@ -24,6 +27,7 @@ class VideoRecordingViewModel extends BaseViewModel
   final _navigationService = locator<NavigationService>();
   final _timerService = locator<TimerService>();
   final _hiveService = locator<HiveService>();
+  final _utilService = locator<UtilService>();
 
   CameraController? controller;
 
@@ -200,16 +204,16 @@ class VideoRecordingViewModel extends BaseViewModel
   }
 
   void videoTapHandler() async {
+    final userBox = await Hive.openBox(authBox);
     if (isRecordingInProgress) {
       XFile? rawVideo = await stopVideoRecording();
       File videoFile = File(rawVideo!.path);
 
-      int currentUnix = DateTime.now().millisecondsSinceEpoch;
-
       final directory = await getApplicationDocumentsDirectory();
       String fileFormat = videoFile.path.split('.').last;
-
-      var fileName = "My Recording-$currentUnix";
+      var userId = userBox.get("auth")["userId"];
+      var fileName = "Video_${userId}_${_utilService.generateUniqueId()}";
+      fileName = _utilService.sanitizeFileId(fileName);
 
       _videoFile = await videoFile.copy(
         '${directory.path}/$fileName.$fileFormat',

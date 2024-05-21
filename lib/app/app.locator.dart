@@ -20,6 +20,7 @@ import '../services/network_service.dart';
 import '../services/record_service.dart';
 import '../services/stopwatch_service.dart';
 import '../services/timer_service.dart';
+import '../services/util_service.dart';
 
 final locator = StackedLocator.instance;
 
@@ -44,4 +45,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => HiveService());
   locator.registerLazySingleton(() => StopwatchService());
   locator.registerLazySingleton(() => AudioRecorder());
+  locator.registerLazySingleton(() => UtilService());
 }

@@ -93,11 +93,8 @@ class MemoView extends StackedView<MemoViewModel> {
                                 ),
                               ],
                             ),
-                            leading: const Icon(
-                              Icons.cloud_off,
-                              color: kcMediumGrey,
-                              size: 17,
-                            ),
+                            leading: viewModel.getStatusIcon(
+                                snapshot.data!.elementAt(index).status),
                             title: Text(
                               snapshot.data!.elementAt(index).name,
                               style: GoogleFonts.montserrat(

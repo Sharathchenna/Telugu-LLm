@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:stacked/stacked.dart';
@@ -7,6 +8,8 @@ import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.logger.dart';
 import 'package:swaram_ai/model/recording.dart';
 import 'package:swaram_ai/services/hive_service.dart';
+import 'package:swaram_ai/services/util_service.dart';
+import 'package:swaram_ai/ui/common/app_hive.dart';
 import 'package:swaram_ai/ui/common/app_strings.dart';
 import 'package:swaram_ai/ui/common/snack_bar.dart';
 
@@ -14,6 +17,8 @@ class TimerService with ListenableServiceMixin {
   final _recordingStarted = ReactiveValue<bool>(false);
   final _videoRecordingStarted = ReactiveValue<bool>(false);
   final _recorder = locator<AudioRecorder>();
+  final _utilService = locator<UtilService>();
+
   String fileName = "";
 
   final _logger = getLogger("TimerService");
@@ -41,6 +46,7 @@ class TimerService with ListenableServiceMixin {
             path: path!,
             name: fileName,
             status: onDevice,
+            isVideo: false,
             totalTime: ""),
       );
 
@@ -68,14 +74,17 @@ class TimerService with ListenableServiceMixin {
 
   Future<void> _startRecording() async {
     _logger.i("Start recording is being called");
+    final userBox = await Hive.openBox(authBox);
     try {
       if (await _recorder.hasPermission()) {
         _logger.i("User granted the microphone permission");
         if (!await _recorder.isRecording()) {
           _logger.i("Recording not started yet and going to start");
           final path = await _localPath;
-          fileName = "MyRecording_${DateTime.now().millisecondsSinceEpoch}";
-          _logger.i("Recording fileName");
+          var userId = userBox.get("auth")["userId"];
+          fileName = "Audio_${userId}_${_utilService.generateUniqueId()}";
+          fileName = _utilService.sanitizeFileId(fileName);
+          _logger.i("Recording $fileName");
           await _recorder.start(const RecordConfig(),
               path: "$path/$fileName.m4a");
           _recordingStarted.value = true;

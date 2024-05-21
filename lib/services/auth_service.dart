@@ -15,7 +15,6 @@ import 'package:swaram_ai/ui/common/snack_bar.dart';
 class AuthService {
   final _client = locator<ClientService>();
   final _logger = getLogger("AuthService");
-  late final Session session;
 
   Future<Map<String, dynamic>> userAuth(String name, String phoneNumber) async {
     phoneNumber = phoneNumber.startsWith("0")
@@ -55,26 +54,39 @@ class AuthService {
 
   Future<Map<String, dynamic>> verifyOtp(
       {required String otpValue, required String userId}) async {
-    Execution requestOtpFunctions = await _client.getFunction.createExecution(
-        functionId: appWriteVerifyOtpFunctions,
-        method: ExecutionMethod.pOST,
-        path: '/',
-        xasync: false,
-        body: jsonEncode({"userId": userId, "otp": otpValue}));
-    _logger.d(requestOtpFunctions.responseBody);
-    _logger.d(requestOtpFunctions.responseStatusCode);
-    Map<String, dynamic> parsedResponse =
-        jsonDecode(requestOtpFunctions.responseBody);
-    if (requestOtpFunctions.responseStatusCode == 200) {
-      if (parsedResponse["ok"]) {
-        var auth = await Hive.openBox(authBox);
-        auth.put("auth", parsedResponse["data"]);
-        return {"status": true, "message": ""};
-      } else {
-        return {"status": false, "message": "OTP failed to verify"};
+    try {
+      Execution requestOtpFunctions = await _client.getFunction.createExecution(
+          functionId: appWriteVerifyOtpFunctions,
+          method: ExecutionMethod.pOST,
+          path: '/',
+          xasync: false,
+          body: jsonEncode({"userId": userId, "otp": otpValue}));
+      _logger.d(requestOtpFunctions.responseBody);
+      _logger.d(requestOtpFunctions.responseStatusCode);
+      Map<String, dynamic> parsedResponse =
+          jsonDecode(requestOtpFunctions.responseBody);
+      if (requestOtpFunctions.responseStatusCode == 200) {
+        if (parsedResponse["ok"]) {
+          var auth = await Hive.openBox(authBox);
+          auth.put("auth", parsedResponse["data"]);
+          _logger.i("Response: $parsedResponse");
+          return {"status": true, "message": ""};
+        } else {
+          return {"status": false, "message": "OTP failed to verify"};
+        }
       }
+    } on AppwriteException catch (e) {
+      var exceptionMessage = AppWriteExceptionHanlder().getExceptionMessage(e);
+      SnackBarHelper.showSnackBar(
+          message: exceptionMessage[1],
+          contentType: ContentType.failure,
+          title: exceptionMessage[0]);
+      return {"data": "", "status": false};
+    } catch (e) {
+      _logger.e(e.toString());
+      SnackBarHelper.showSnackBar(
+          message: "Something went wrong! ", contentType: ContentType.failure);
     }
-
     return {"status": false};
   }
 }

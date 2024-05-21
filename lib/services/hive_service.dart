@@ -1,11 +1,10 @@
 import 'package:hive/hive.dart';
-import 'package:stacked/stacked.dart';
+import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.logger.dart';
 import 'package:swaram_ai/model/recording.dart';
 import 'package:swaram_ai/ui/common/app_hive.dart';
 
 class HiveService {
-  final _updateInBox = ReactiveValue<bool>(false);
   final _logger = getLogger("Hive Service");
 
   late Box<Recording> _recordBox;
@@ -21,10 +20,9 @@ class HiveService {
 
   Future<void> _initBoxes() async {
     _recordBox = await Hive.openBox<Recording>(recordingBox);
+    locator.registerLazySingleton(() => _recordBox);
     _categoryBox = await Hive.openBox<List<Map<String, dynamic>>>(categoryBox);
   }
-
-  bool get updateInBox => _updateInBox.value;
 
   void saveRecordings({required Recording recording}) =>
       _recordBox.put(recording.id, recording);

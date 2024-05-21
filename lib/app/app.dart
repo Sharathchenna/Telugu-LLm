@@ -20,6 +20,7 @@ import 'package:swaram_ai/ui/dialogs/confirm/confirm_dialog.dart';
 import 'package:swaram_ai/services/stopwatch_service.dart';
 import 'package:swaram_ai/ui/views/video_recording/video_recording_view.dart';
 import 'package:swaram_ai/ui/views/memo_detail/memo_detail_view.dart';
+import 'package:swaram_ai/services/util_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -49,6 +50,7 @@ import 'package:swaram_ai/ui/views/memo_detail/memo_detail_view.dart';
     LazySingleton(classType: HiveService),
     LazySingleton(classType: StopwatchService),
     LazySingleton(classType: AudioRecorder),
+    LazySingleton(classType: UtilService),
 // @stacked-service
   ],
   bottomsheets: [
