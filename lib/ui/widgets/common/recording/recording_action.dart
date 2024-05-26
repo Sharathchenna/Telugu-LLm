@@ -1,6 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
@@ -36,13 +35,13 @@ class RecordingAction extends StackedView<RecordingModel> {
                     : kcPrimaryBlueColor,
                 radius: screenWidthFraction(context, dividedBy: 10),
                 child: viewModel.isRecordStarted
-                    ? const FaIcon(
-                        FontAwesomeIcons.stop,
+                    ? const Icon(
+                        Icons.stop,
                         color: kcBackgroundColor,
                         size: 40,
                       )
-                    : const FaIcon(
-                        FontAwesomeIcons.microphone,
+                    : const Icon(
+                        Icons.mic_none_outlined,
                         color: kcBackgroundColor,
                         size: 40,
                       ),

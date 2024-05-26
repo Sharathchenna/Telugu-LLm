@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/services/category_service.dart';
@@ -25,7 +24,7 @@ class RewardFooterModel extends ReactiveViewModel {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RewardContainer(
-              iconData: FontAwesomeIcons.crown,
+              iconData: Icons.favorite_outlined,
               reward: "23",
               footeText: "Hours of voice"),
           horizontalSpaceSmall,

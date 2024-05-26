@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
@@ -61,7 +60,7 @@ class MyAppBar extends StackedView<MyAppBarModel>
       actions: [
         viewModel.networkWidget,
         horizontalSpaceSmall,
-        PrimaryButton(onTapHandler: () {}, iconData: FontAwesome.a_solid),
+        PrimaryButton(onTapHandler: () {}, iconData: Icons.language_outlined),
         horizontalSpaceSmall,
       ],
     );
