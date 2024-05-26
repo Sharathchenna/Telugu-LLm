@@ -35,7 +35,7 @@ class CategoryService with ListenableServiceMixin {
   Future<List<Map<String, dynamic>>> getCategories() async {
     _logger.d("Inside the getcategories function");
     if (categoryData.isNotEmpty) {
-      _logger.d(categoryData);
+      // _logger.d(categoryData);
       return Future.value(categoryData);
     }
     _logger.d("Network Service: ${_networkService.hasConnection}");

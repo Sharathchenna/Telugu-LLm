@@ -20,7 +20,7 @@ class RecordingAdapter extends TypeAdapter<Recording> {
       path: fields[2] as String,
       name: fields[3] as String,
       status: fields[4] as String,
-      totalTime: fields[5] as String,
+      created: fields[5] as String,
       isVideo: fields[6] == null ? false : fields[6] as bool,
       id: fields[1] as String?,
     );
@@ -39,7 +39,7 @@ class RecordingAdapter extends TypeAdapter<Recording> {
       ..writeByte(4)
       ..write(obj.status)
       ..writeByte(5)
-      ..write(obj.totalTime)
+      ..write(obj.created)
       ..writeByte(6)
       ..write(obj.isVideo);
   }

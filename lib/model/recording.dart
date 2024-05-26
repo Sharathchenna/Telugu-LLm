@@ -17,7 +17,7 @@ class Recording extends HiveObject {
   String status;
 
   @HiveField(5)
-  String totalTime;
+  String created;
 
   @HiveField(6, defaultValue: false)
   bool isVideo;
@@ -26,7 +26,7 @@ class Recording extends HiveObject {
       {required this.path,
       required this.name,
       required this.status,
-      required this.totalTime,
+      required this.created,
       this.isVideo = false,
       this.id});
 }

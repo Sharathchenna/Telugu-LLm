@@ -14,10 +14,10 @@ class BackgroundService {
   final _logger = getLogger("Background service");
 
   void init() async {
-    Timer.periodic(const Duration(seconds: 10), (timer) async {
+    Timer.periodic(const Duration(seconds: 20), (timer) async {
       _logger.d("Background Service Running | ${timer.tick}");
       if (_networkService.hasConnection) {
-        _processRecordings();
+        await _processRecordings();
       }
       _networkService.cancel();
     });
@@ -39,7 +39,7 @@ class BackgroundService {
     } catch (e) {
       _logger.e('Error processing recordings: $e');
     } finally {
-      recordBox!.close();
+      recordBox?.close();
     }
   }
 
@@ -50,6 +50,7 @@ class BackgroundService {
       _updateValue(
           key: recording.key, updatedValue: recording, recordBox: recordBox);
       _logger.d("Recorind status updated to on cloud: ${recording.id!}");
+      _logger.d("Recording path: ${recording.path}");
       // Start the uploading process here
       await _recordService.uploadRecording(recording.path, recording.name);
 

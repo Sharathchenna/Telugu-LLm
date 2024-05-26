@@ -6,7 +6,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -141,7 +140,6 @@ class VideoRecordingViewModel extends BaseViewModel
       isRecordingInProgress = true;
       _timerService.videoRecordingStarted = true;
       _logger.i(isRecordingInProgress);
-
       rebuildUi();
     } on CameraException catch (e) {
       _logger.e("Error in stating to record video: $e");
@@ -208,25 +206,30 @@ class VideoRecordingViewModel extends BaseViewModel
     if (isRecordingInProgress) {
       XFile? rawVideo = await stopVideoRecording();
       File videoFile = File(rawVideo!.path);
+      String dirPath = videoFile.parent.path;
 
-      final directory = await getApplicationDocumentsDirectory();
       String fileFormat = videoFile.path.split('.').last;
-      var userId = userBox.get("auth")["userId"];
-      var fileName = "Video_${userId}_${_utilService.generateUniqueId()}";
-      fileName = _utilService.sanitizeFileId(fileName);
+      String userId = userBox.get("auth")["userId"];
+      userId = userId.substring(userId.length - 10);
+      int currentUnix = DateTime.now().millisecondsSinceEpoch;
 
-      _videoFile = await videoFile.copy(
-        '${directory.path}/$fileName.$fileFormat',
-      );
-      _logger.i("Video File Path: $_videoFile");
+      var fileName = "Video_${userId}_$currentUnix";
+      fileName = _utilService.sanitizeFileId(fileName);
+      fileName = "$fileName.$fileFormat";
+
+      _videoFile = File("$dirPath/$fileName");
+
+      _videoFile = await videoFile.rename(_videoFile.path);
+      _logger.i("Video File Path: ${_videoFile.path}");
       _hiveService.saveRecordings(
-          recording: Recording(
-              id: fileName,
-              path: _videoFile.path,
-              name: fileName,
-              status: onDevice,
-              totalTime: "",
-              isVideo: true));
+        recording: Recording(
+            id: fileName,
+            path: _videoFile.path,
+            name: fileName,
+            status: onDevice,
+            created: DateTime.now().toIso8601String(),
+            isVideo: true),
+      );
 
       SnackBarHelper.showSnackBar(
           title: "Video Saved",

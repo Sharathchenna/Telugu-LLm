@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/app/app.locator.dart';
@@ -12,10 +14,15 @@ class RecordService with ListenableServiceMixin {
   uploadRecording(String filePath, String fileName) async {
     try {
       _logger.d("Started the recording");
-      await _storage.createFile(
-          bucketId: appWriteRecordingBucketId,
-          fileId: fileName,
-          file: InputFile.fromPath(path: filePath));
+      var fileExist = await checkFileExist(filePath);
+      _logger.i("File Exist: $fileExist");
+      if (fileExist) {
+        await _storage.createFile(
+            bucketId: appWriteRecordingBucketId,
+            fileId: fileName,
+            file: InputFile.fromPath(path: filePath, filename: fileName));
+        _logger.d("Successfully uploaded");
+      }
     } on AppwriteException catch (e) {
       _logger.e("Appwrite exception| ${e.toString()}");
       rethrow;
@@ -23,5 +30,11 @@ class RecordService with ListenableServiceMixin {
       _logger.e("Exception| ${e.toString()}");
       rethrow;
     }
+  }
+
+  Future<bool> checkFileExist(String filePath) async {
+    File file = File(filePath);
+    _logger.i(await file.length());
+    return await file.exists();
   }
 }

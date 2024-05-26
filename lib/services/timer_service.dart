@@ -47,7 +47,7 @@ class TimerService with ListenableServiceMixin {
             name: fileName,
             status: onDevice,
             isVideo: false,
-            totalTime: ""),
+            created: DateTime.now().toIso8601String()),
       );
 
       SnackBarHelper.showSnackBar(
@@ -82,11 +82,12 @@ class TimerService with ListenableServiceMixin {
           _logger.i("Recording not started yet and going to start");
           final path = await _localPath;
           var userId = userBox.get("auth")["userId"];
-          fileName = "Audio_${userId}_${_utilService.generateUniqueId()}";
+          userId = userId.substring(userId.length - 10);
+          int currentUnix = DateTime.now().millisecondsSinceEpoch;
+          fileName = "Audio_${userId}_$currentUnix..aac";
           fileName = _utilService.sanitizeFileId(fileName);
           _logger.i("Recording $fileName");
-          await _recorder.start(const RecordConfig(),
-              path: "$path/$fileName.m4a");
+          await _recorder.start(const RecordConfig(), path: "$path/$fileName");
           _recordingStarted.value = true;
         }
       }

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:swaram_ai/app/app.logger.dart';
-import 'package:swaram_ai/ui/common/app_strings.dart';
 
 class UtilService {
   final _logger = getLogger("Util Service");
