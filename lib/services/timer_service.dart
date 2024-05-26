@@ -84,7 +84,7 @@ class TimerService with ListenableServiceMixin {
           var userId = userBox.get("auth")["userId"];
           userId = userId.substring(userId.length - 10);
           int currentUnix = DateTime.now().millisecondsSinceEpoch;
-          fileName = "Audio_${userId}_$currentUnix..aac";
+          fileName = "Audio_${userId}_$currentUnix.aac";
           fileName = _utilService.sanitizeFileId(fileName);
           _logger.i("Recording $fileName");
           await _recorder.start(const RecordConfig(), path: "$path/$fileName");

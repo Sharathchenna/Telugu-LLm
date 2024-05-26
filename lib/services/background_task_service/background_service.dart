@@ -49,6 +49,11 @@ class BackgroundService {
       _logger.d("Recorind status updated to on cloud: ${recording.id!}");
       _logger.d("Recording path: ${recording.path}");
 
+      _updateValue(
+          key: recording.key,
+          status: uploading,
+          recordBox: await checkBoxAndOpen(recordBox));
+
       await _recordService.uploadRecording(recording.path, recording.name,
           (progressStatus) async {
         var internalRecordBox = await Hive.openBox<Recording>(recordingBox);
@@ -78,10 +83,21 @@ class BackgroundService {
           internalRecordBox.close();
         }
       });
+      _updateValue(
+          key: recording.key,
+          status: onCloud,
+          recordBox: await checkBoxAndOpen(recordBox));
     } catch (e) {
       _logger.e('Error updating recording status: $e');
       _updateValue(key: recording.key, status: onDevice, recordBox: recordBox);
     }
+  }
+
+  Future<Box<Recording>> checkBoxAndOpen(Box<Recording> recordbox) async {
+    if (recordbox.isOpen) {
+      return recordbox;
+    }
+    return await Hive.openBox<Recording>(recordingBox);
   }
 
   bool _updateValue(
