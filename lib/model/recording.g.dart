@@ -22,6 +22,7 @@ class RecordingAdapter extends TypeAdapter<Recording> {
       status: fields[4] as String,
       created: fields[5] as String,
       isVideo: fields[6] == null ? false : fields[6] as bool,
+      progress: fields[7] == null ? 0.0 : fields[7] as double,
       id: fields[1] as String?,
     );
   }
@@ -29,7 +30,7 @@ class RecordingAdapter extends TypeAdapter<Recording> {
   @override
   void write(BinaryWriter writer, Recording obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(1)
       ..write(obj.id)
       ..writeByte(2)
@@ -41,7 +42,9 @@ class RecordingAdapter extends TypeAdapter<Recording> {
       ..writeByte(5)
       ..write(obj.created)
       ..writeByte(6)
-      ..write(obj.isVideo);
+      ..write(obj.isVideo)
+      ..writeByte(7)
+      ..write(obj.progress);
   }
 
   @override

@@ -11,7 +11,8 @@ class RecordService with ListenableServiceMixin {
   final Storage _storage = locator<ClientService>().getAppWriteStorage;
   final _logger = getLogger("Record Service");
 
-  uploadRecording(String filePath, String fileName) async {
+  uploadRecording(String filePath, String fileName,
+      Function(UploadProgress)? onProgress) async {
     try {
       _logger.d("Started the recording");
       var fileExist = await checkFileExist(filePath);
@@ -20,7 +21,8 @@ class RecordService with ListenableServiceMixin {
         await _storage.createFile(
             bucketId: appWriteRecordingBucketId,
             fileId: fileName,
-            file: InputFile.fromPath(path: filePath, filename: fileName));
+            file: InputFile.fromPath(path: filePath, filename: fileName),
+            onProgress: onProgress);
         _logger.d("Successfully uploaded");
       }
     } on AppwriteException catch (e) {

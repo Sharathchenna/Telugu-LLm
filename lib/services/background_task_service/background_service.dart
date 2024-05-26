@@ -46,32 +46,54 @@ class BackgroundService {
   Future<void> _updateRecordingStatusAndUpload(
       Recording recording, Box<Recording> recordBox) async {
     try {
-      recording.status = uploading;
-      _updateValue(
-          key: recording.key, updatedValue: recording, recordBox: recordBox);
       _logger.d("Recorind status updated to on cloud: ${recording.id!}");
       _logger.d("Recording path: ${recording.path}");
-      // Start the uploading process here
-      await _recordService.uploadRecording(recording.path, recording.name);
 
-      recording.status = onCloud;
-      _updateValue(
-          key: recording.key, updatedValue: recording, recordBox: recordBox);
+      await _recordService.uploadRecording(recording.path, recording.name,
+          (progressStatus) async {
+        var internalRecordBox = await Hive.openBox<Recording>(recordingBox);
+        _logger.i("Map :${progressStatus.toMap()}");
+        try {
+          _updateValue(
+              key: recording.key,
+              status: uploading,
+              progress: progressStatus.progress,
+              recordBox: internalRecordBox);
+          // Handle completion
+          if (progressStatus.progress == 100.0) {
+            _updateValue(
+                key: recording.key,
+                status: onCloud,
+                progress: progressStatus.progress,
+                recordBox: internalRecordBox);
+          }
+        } catch (e) {
+          _logger.e("Failed to upload: ${e.toString()}");
+          _updateValue(
+              key: recording.key,
+              status: onDevice,
+              progress: progressStatus.progress,
+              recordBox: recordBox);
+        } finally {
+          internalRecordBox.close();
+        }
+      });
     } catch (e) {
       _logger.e('Error updating recording status: $e');
-      recording.status = onDevice;
-      _updateValue(
-          key: recording.key, updatedValue: recording, recordBox: recordBox);
+      _updateValue(key: recording.key, status: onDevice, recordBox: recordBox);
     }
   }
 
-  Future<bool> _updateValue(
+  bool _updateValue(
       {required String key,
-      required Recording updatedValue,
-      required Box<Recording> recordBox}) async {
+      required String status,
+      double progress = 0.0,
+      required Box<Recording> recordBox}) {
     Recording? recording = recordBox.get(key);
     if (recording != null) {
-      recordBox.put(key, updatedValue);
+      recording.status = status;
+      recording.progress = progress;
+      recordBox.put(key, recording);
       return true;
     } else {
       _logger.d("Update failed: Key $key");

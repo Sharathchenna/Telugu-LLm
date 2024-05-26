@@ -22,11 +22,15 @@ class Recording extends HiveObject {
   @HiveField(6, defaultValue: false)
   bool isVideo;
 
+  @HiveField(7, defaultValue: 0.0)
+  double progress;
+
   Recording(
       {required this.path,
       required this.name,
       required this.status,
       required this.created,
       this.isVideo = false,
+      this.progress = 0.0,
       this.id});
 }
