@@ -18,6 +18,9 @@ class MyAppBarModel extends ReactiveViewModel {
   }
 
   void navigateToMemoScreen() => _navigationService.navigateToMemoView();
+  void navigateToProfileScreen() {
+    _navigationService.navigateToProfileView();
+  }
 
   Widget get networkWidget => AnimatedCrossFade(
       firstChild: Column(
