@@ -6,6 +6,7 @@ import 'package:otp_text_field/style.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
+import 'package:swaram_ai/ui/widgets/common/keypad_close_widget.dart';
 import 'package:swaram_ai/ui/widgets/common/login_header/login_header.dart';
 import 'package:swaram_ai/ui/widgets/common/primary_submit_button/primary_submit_button.dart';
 import 'package:swaram_ai/ui/widgets/common/swecha_footer/swecha_footer.dart';
@@ -61,62 +62,66 @@ class OtpView extends StackedView<OtpViewModel> {
       backgroundColor: kcBackgroundColor,
       body: SafeArea(
         top: true,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+        child: CloseKeyPadWidget(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const LoginHeader(
-                  headerText: "Create your account",
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
+                Column(
+                  children: [
+                    const LoginHeader(
+                      headerText: "Create your account",
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            "  Enter OTP",
-                            style: GoogleFonts.montserrat(
-                                color: kcTextDark2,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                "  Enter OTP",
+                                style: GoogleFonts.montserrat(
+                                    color: kcTextDark2,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
                           ),
+                          verticalSpaceSmall,
+                          OTPTextField(
+                              length: 6,
+                              width: screenWidth(context),
+                              fieldWidth: 50,
+                              style: const TextStyle(fontSize: 17),
+                              textFieldAlignment: MainAxisAlignment.spaceAround,
+                              fieldStyle: FieldStyle.box,
+                              otpFieldStyle: OtpFieldStyle(
+                                  backgroundColor: Colors.white,
+                                  borderColor: kcMediumGrey),
+                              onCompleted: viewModel.onPinCompletedHandler,
+                              onChanged: viewModel.onChangePinHandler),
                         ],
                       ),
-                      verticalSpaceSmall,
-                      OTPTextField(
-                          length: 6,
-                          width: screenWidth(context),
-                          fieldWidth: 50,
-                          style: const TextStyle(fontSize: 17),
-                          textFieldAlignment: MainAxisAlignment.spaceAround,
-                          fieldStyle: FieldStyle.box,
-                          otpFieldStyle: OtpFieldStyle(
-                              backgroundColor: Colors.white,
-                              borderColor: kcMediumGrey),
-                          onCompleted: viewModel.onPinCompletedHandler,
-                          onChanged: viewModel.onChangePinHandler),
-                    ],
-                  ),
+                    ),
+                    verticalSpaceMedium,
+                    PrimarySubmitButton(
+                      isLoading: viewModel.isLoading,
+                      buttonText: "Verify number",
+                      onTap: viewModel.verifyOtpHandler,
+                    ),
+                    // const InfoMessage(
+                    //   infoText: "Already a memeber?",
+                    //   actionString: "Sign in here",
+                    // ),
+                  ],
                 ),
-                verticalSpaceMedium,
-                PrimarySubmitButton(
-                  isLoading: viewModel.isLoading,
-                  buttonText: "Verify number",
-                  onTap: viewModel.verifyOtpHandler,
-                ),
-                // const InfoMessage(
-                //   infoText: "Already a memeber?",
-                //   actionString: "Sign in here",
-                // ),
+                const SwechaFooter()
               ],
             ),
-            const SwechaFooter()
-          ],
+          ),
         ),
       ),
     );

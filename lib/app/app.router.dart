@@ -5,14 +5,15 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i9;
+import 'package:flutter/material.dart' as _i10;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i10;
+import 'package:stacked_services/stacked_services.dart' as _i11;
 import 'package:swaram_ai/ui/views/dashboard/dashboard_view.dart' as _i5;
 import 'package:swaram_ai/ui/views/memo/memo_view.dart' as _i6;
 import 'package:swaram_ai/ui/views/memo_detail/memo_detail_view.dart' as _i8;
 import 'package:swaram_ai/ui/views/otp/otp_view.dart' as _i4;
+import 'package:swaram_ai/ui/views/profile/profile_view.dart' as _i9;
 import 'package:swaram_ai/ui/views/sign_in/sign_in_view.dart' as _i3;
 import 'package:swaram_ai/ui/views/startup/startup_view.dart' as _i2;
 import 'package:swaram_ai/ui/views/video_recording/video_recording_view.dart'
@@ -33,6 +34,8 @@ class Routes {
 
   static const memoDetailView = '/memo-detail-view';
 
+  static const profileView = '/profile-view';
+
   static const all = <String>{
     startupView,
     signInView,
@@ -41,6 +44,7 @@ class Routes {
     memoView,
     videoRecordingView,
     memoDetailView,
+    profileView,
   };
 }
 
@@ -74,50 +78,60 @@ class StackedRouter extends _i1.RouterBase {
       Routes.memoDetailView,
       page: _i8.MemoDetailView,
     ),
+    _i1.RouteDef(
+      Routes.profileView,
+      page: _i9.ProfileView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.StartupView: (data) {
-      return _i9.MaterialPageRoute<dynamic>(
+      return _i10.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.StartupView(),
         settings: data,
       );
     },
     _i3.SignInView: (data) {
-      return _i9.MaterialPageRoute<dynamic>(
+      return _i10.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.SignInView(),
         settings: data,
       );
     },
     _i4.OtpView: (data) {
       final args = data.getArgs<OtpViewArguments>(nullOk: false);
-      return _i9.MaterialPageRoute<dynamic>(
+      return _i10.MaterialPageRoute<dynamic>(
         builder: (context) => _i4.OtpView(userId: args.userId, key: args.key),
         settings: data,
       );
     },
     _i5.DashboardView: (data) {
-      return _i9.MaterialPageRoute<dynamic>(
+      return _i10.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.DashboardView(),
         settings: data,
       );
     },
     _i6.MemoView: (data) {
-      return _i9.MaterialPageRoute<dynamic>(
+      return _i10.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.MemoView(),
         settings: data,
       );
     },
     _i7.VideoRecordingView: (data) {
-      return _i9.MaterialPageRoute<dynamic>(
+      return _i10.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.VideoRecordingView(),
         settings: data,
       );
     },
     _i8.MemoDetailView: (data) {
       final args = data.getArgs<MemoDetailViewArguments>(nullOk: false);
-      return _i9.MaterialPageRoute<dynamic>(
+      return _i10.MaterialPageRoute<dynamic>(
         builder: (context) => _i8.MemoDetailView(id: args.id, key: args.key),
+        settings: data,
+      );
+    },
+    _i9.ProfileView: (data) {
+      return _i10.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i9.ProfileView(),
         settings: data,
       );
     },
@@ -138,7 +152,7 @@ class OtpViewArguments {
 
   final String userId;
 
-  final _i9.Key? key;
+  final _i10.Key? key;
 
   @override
   String toString() {
@@ -165,7 +179,7 @@ class MemoDetailViewArguments {
 
   final String id;
 
-  final _i9.Key? key;
+  final _i10.Key? key;
 
   @override
   String toString() {
@@ -184,7 +198,7 @@ class MemoDetailViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i10.NavigationService {
+extension NavigatorStateExtension on _i11.NavigationService {
   Future<dynamic> navigateToStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -215,7 +229,7 @@ extension NavigatorStateExtension on _i10.NavigationService {
 
   Future<dynamic> navigateToOtpView({
     required String userId,
-    _i9.Key? key,
+    _i10.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -274,7 +288,7 @@ extension NavigatorStateExtension on _i10.NavigationService {
 
   Future<dynamic> navigateToMemoDetailView({
     required String id,
-    _i9.Key? key,
+    _i10.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -283,6 +297,20 @@ extension NavigatorStateExtension on _i10.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.memoDetailView,
         arguments: MemoDetailViewArguments(id: id, key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToProfileView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.profileView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -319,7 +347,7 @@ extension NavigatorStateExtension on _i10.NavigationService {
 
   Future<dynamic> replaceWithOtpView({
     required String userId,
-    _i9.Key? key,
+    _i10.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -378,7 +406,7 @@ extension NavigatorStateExtension on _i10.NavigationService {
 
   Future<dynamic> replaceWithMemoDetailView({
     required String id,
-    _i9.Key? key,
+    _i10.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -387,6 +415,20 @@ extension NavigatorStateExtension on _i10.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.memoDetailView,
         arguments: MemoDetailViewArguments(id: id, key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithProfileView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.profileView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
