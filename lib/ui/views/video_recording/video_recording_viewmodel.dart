@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:camera/camera.dart';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
@@ -17,8 +18,8 @@ import 'package:swaram_ai/services/timer_service.dart';
 import 'package:swaram_ai/services/util_service.dart';
 import 'package:swaram_ai/ui/common/app_hive.dart';
 import 'package:swaram_ai/ui/common/app_strings.dart';
-
 import 'package:swaram_ai/ui/common/snack_bar.dart';
+import 'package:swaram_ai/ui/utils/permissions_util.dart';
 
 class VideoRecordingViewModel extends BaseViewModel
     with WidgetsBindingObserver {
@@ -37,6 +38,8 @@ class VideoRecordingViewModel extends BaseViewModel
   bool isRecordingInProgress = false;
   File _videoFile = File('');
   bool isCameraPermissionGranted = false;
+  Timer? _timer;
+  bool isRecordingStarted = false;
 
   VideoRecordingViewModel() {
     getPermissionStatus();
@@ -203,6 +206,8 @@ class VideoRecordingViewModel extends BaseViewModel
   void videoTapHandler() async {
     final userBox = await Hive.openBox(authBox);
     if (isRecordingInProgress) {
+      isRecordingStarted = false;
+      _timer?.cancel();
       XFile? rawVideo = await stopVideoRecording();
       File videoFile = File(rawVideo!.path);
       String dirPath = videoFile.parent.path;
@@ -238,74 +243,79 @@ class VideoRecordingViewModel extends BaseViewModel
       // _startVideoPlayer();
     } else {
       await startVideoRecording();
+      _timer = Timer.periodic(const Duration(seconds: 10), ((timer) {
+        uploadVideoAtEverySixtySeconds();
+      }));
+    }
+  }
+
+  void uploadVideoAtEverySixtySeconds() async {
+    final CameraController? cameraController = controller;
+    if (isRecordingInProgress) {
+      final userBox = await Hive.openBox(authBox);
+      if (isRecordingInProgress) {
+        isRecordingStarted = true;
+        XFile? rawVideo = await stopVideoRecording();
+        File videoFile = File(rawVideo!.path);
+        String dirPath = videoFile.parent.path;
+
+        String fileFormat = videoFile.path.split('.').last;
+        String userId = userBox.get("auth")["userId"];
+        userId = userId.substring(userId.length - 10);
+        int currentUnix = DateTime.now().millisecondsSinceEpoch;
+
+        var fileName = "Video_${userId}_$currentUnix";
+        fileName = _utilService.sanitizeFileId(fileName);
+        fileName = "$fileName.$fileFormat";
+
+        _videoFile = File("$dirPath/$fileName");
+
+        _videoFile = await videoFile.rename(_videoFile.path);
+        _logger.i("Video File Path: ${_videoFile.path}");
+        _hiveService.saveRecordings(
+          recording: Recording(
+              id: fileName,
+              path: _videoFile.path,
+              name: fileName,
+              status: onDevice,
+              created: DateTime.now().toIso8601String(),
+              isVideo: true),
+        );
+
+        if (cameraController != null) {
+          await cameraController.startVideoRecording();
+          isRecordingInProgress = true;
+          _timerService.videoRecordingStarted = true;
+        } else {}
+      }
+    }
+  }
+
+  Future<XFile?> stopVideoRecordingSixtySeonds() async {
+    if (!controller!.value.isRecordingVideo) {
+      // Recording is already is stopped state
+      return null;
+    }
+    try {
+      XFile file = await controller!.stopVideoRecording();
+      isRecordingInProgress = false;
+      _logger.i(isRecordingInProgress);
+
+      return file;
+    } on CameraException catch (e) {
+      _logger.d(e);
+      _logger.e("Error stopping video recording: $e");
+      // SnackBarHelper.showSnackBar(
+      //     message: "Something went wrong", contentType: ContentType.failure);
+      return null;
     }
   }
 
   @override
   void dispose() {
+    isRecordingStarted = false;
+    _timer?.cancel();
     controller?.dispose();
     super.dispose();
-  }
-}
-
-class PermissionsHandlerUtil {
-  static Future<bool> checkAndRequestCameraPermission() async {
-    final status = await Permissions().hasCameraPermission();
-    if (!status) {
-      final requestResult = await Permissions().requestCameraPermission();
-      if (requestResult == PermissionStatus.granted) {
-        // Use the camera functionality here
-      } else if (requestResult == PermissionStatus.permanentlyDenied) {
-        // Handle permanently denied cases
-      } else {
-        // Handle other possible statuses
-      }
-    }
-    return status;
-  }
-
-  static Future<bool> checkAndRequestMicroPhonePermission() async {
-    final status = await Permissions().hasMicroPhonePermission();
-    if (!status) {
-      final requestResult = await Permissions().requestMicroPhonePermission();
-      if (requestResult == PermissionStatus.granted) {
-        // Use the microphone functionality here
-      } else if (requestResult == PermissionStatus.permanentlyDenied) {
-        // Handle permanently denied cases
-      } else {
-        // Handle other possible statuses
-      }
-    }
-    return status;
-  }
-}
-
-class Permissions {
-  // Check camera permission status
-  Future<bool> hasCameraPermission() async {
-    final status = await Permission.camera.status;
-    return status.isGranted;
-  }
-
-  // Request camera permission
-  Future<PermissionStatus> requestCameraPermission() async {
-    if (await hasCameraPermission()) {
-      return PermissionStatus.granted;
-    }
-    final requestResult = await Permission.camera.request();
-    return requestResult;
-  }
-
-  Future<bool> hasMicroPhonePermission() async {
-    final status = await Permission.microphone.status;
-    return status.isGranted;
-  }
-
-  Future<PermissionStatus> requestMicroPhonePermission() async {
-    if (await hasMicroPhonePermission()) {
-      return PermissionStatus.granted;
-    }
-    final requestResult = await Permission.microphone.request();
-    return requestResult;
   }
 }

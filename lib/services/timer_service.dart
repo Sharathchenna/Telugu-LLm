@@ -32,6 +32,8 @@ class TimerService with ListenableServiceMixin {
 
   set videoRecordingStarted(bool status) => _recordingStarted.value = status;
 
+  Timer? _timer;
+
   TimerService() {
     listenToReactiveValues([_recordingStarted]);
   }
@@ -77,6 +79,9 @@ class TimerService with ListenableServiceMixin {
     final userBox = await Hive.openBox(authBox);
     try {
       if (await _recorder.hasPermission()) {
+        _timer = Timer.periodic(const Duration(seconds: 10), ((timer) {
+          uploadAudioAtEverySixtySeconds();
+        }));
         _logger.i("User granted the microphone permission");
         if (!await _recorder.isRecording()) {
           _logger.i("Recording not started yet and going to start");
@@ -107,6 +112,45 @@ class TimerService with ListenableServiceMixin {
   Future<void> startOrStopRecording() async {
     _logger.i("Button pressed");
     isRecordingStarted ? await _stopRecording() : await _startRecording();
+  }
+
+  void uploadAudioAtEverySixtySeconds() async {
+    String? path = await _recorder.stop();
+    _logger.i("recording file: $path");
+    try {
+      _hiveService.saveRecordings(
+        recording: Recording(
+            id: fileName,
+            path: path!,
+            name: fileName,
+            status: onDevice,
+            isVideo: false,
+            created: DateTime.now().toIso8601String()),
+      );
+
+      final userBox = await Hive.openBox(authBox);
+      if (await _recorder.hasPermission()) {
+        _logger.i("User granted the microphone permission");
+        if (!await _recorder.isRecording()) {
+          _logger.i("Recording not started yet and going to start");
+          final path = await _localPath;
+          var userId = userBox.get("auth")["userId"];
+          userId = userId.substring(userId.length - 10);
+          int currentUnix = DateTime.now().millisecondsSinceEpoch;
+          fileName = "Audio_${userId}_$currentUnix.aac";
+          fileName = _utilService.sanitizeFileId(fileName);
+          _logger.i("Recording $fileName");
+          await _recorder.start(const RecordConfig(), path: "$path/$fileName");
+          _recordingStarted.value = true;
+        }
+      }
+    } catch (e) {
+      _logger.e("Saving the recording in local failed: ${e.toString()}");
+    } finally {
+      // _recordingStarted.value = false;
+      // fileName = "";
+      //notifyListeners();
+    }
   }
 
   void dispose() {}
