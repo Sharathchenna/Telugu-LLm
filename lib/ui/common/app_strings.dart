@@ -13,3 +13,5 @@ const String appWriteVerifyOtpFunctions = "verify_otp";
 
 const String appWriteCategoriesDatabase = "663481370010f83995b0";
 const String appWriteCategoriesCollection = "6634833d0031832cc432";
+
+const String privacyURL = "https://swecha.org/privacy-policy";

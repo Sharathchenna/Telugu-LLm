@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
@@ -40,18 +41,21 @@ class SwechaFooter extends StackedView<SwechaFooterModel> {
           ],
         ),
         verticalSpaceSmall,
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Privacy policy',
-              style: GoogleFonts.montserrat(
-                  color: kcPrimaryBlueColor,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400),
-            ),
-          ],
+        GestureDetector(
+          onTap: viewModel.launchInBrowser,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Privacy policy',
+                style: GoogleFonts.montserrat(
+                    color: kcPrimaryBlueColor,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
         ),
       ],
     );
