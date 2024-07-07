@@ -5,7 +5,6 @@ import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'package:swaram_ai/ui/widgets/common/recording/recording_model.dart';
-import 'package:swaram_ai/ui/widgets/common/reward_footer/reward_footer.dart';
 
 class RecordingAction extends StackedView<RecordingModel> {
   const RecordingAction({
@@ -59,7 +58,7 @@ class RecordingAction extends StackedView<RecordingModel> {
           SizedBox(
             height: screenHeightFraction(context, dividedBy: 60),
           ),
-          const RewardFooter(),
+          // const RewardFooter(),
         ],
       ),
     );

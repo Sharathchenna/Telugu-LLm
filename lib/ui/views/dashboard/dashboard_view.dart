@@ -36,7 +36,7 @@ class DashboardView extends StackedView<DashboardViewModel> {
                 flex: 4,
                 child: AnimatedSwitcher(
                   key: const ValueKey(false),
-                  duration: const Duration(seconds: 2),
+                  duration: const Duration(seconds: 0),
                   child: (viewModel.isRecordStarted &&
                           !viewModel.isCategoryPressed)
                       ? const Timer()

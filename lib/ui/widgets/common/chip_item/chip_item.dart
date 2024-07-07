@@ -21,6 +21,7 @@ class ChipItem extends StackedView<ChipItemModel> {
     ChipItemModel viewModel,
     Widget? child,
   ) {
+    print('imagePath $imagePath');
     return FittedBox(
       key: const ValueKey(true),
       child: FlexiChip(
@@ -32,12 +33,31 @@ class ChipItem extends StackedView<ChipItemModel> {
           ),
         ),
         style: FlexiChipStyle.outlined(),
-        leading: Image.asset(
-          imagePath,
-          height: 24,
-          width: 24,
-          fit: BoxFit.cover,
-        ),
+        leading: imagePath.startsWith('http')
+            ? Image.network(
+                imagePath,
+                height: 24,
+                width: 24,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Image.asset(
+                  "assets/icons/book_open.png",
+                  height: 24,
+                  width: 24,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : Image.asset(
+                imagePath,
+                height: 24,
+                width: 24,
+                errorBuilder: (context, error, stackTrace) => Image.asset(
+                  "assets/icons/book_open.png",
+                  height: 24,
+                  width: 24,
+                  fit: BoxFit.cover,
+                ),
+                fit: BoxFit.cover,
+              ),
         onPressed: () => viewModel.toggleChipCard(id),
       ),
     );

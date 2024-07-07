@@ -17,7 +17,7 @@ class DashboardHeader extends StackedView<DashboardHeaderModel> {
     Widget? child,
   ) {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 0),
       switchInCurve: Curves.easeInBack,
       switchOutCurve: Curves.easeOutBack,
       layoutBuilder: (widget, list) => Stack(children: [widget!, ...list]),

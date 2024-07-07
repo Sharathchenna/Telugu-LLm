@@ -7,7 +7,6 @@ import 'package:swaram_ai/ui/widgets/common/input_with_field/input_with_field.da
 import 'package:swaram_ai/ui/widgets/common/keypad_close_widget.dart';
 import 'package:swaram_ai/ui/widgets/common/login_header/login_header.dart';
 import 'package:swaram_ai/ui/widgets/common/primary_submit_button/primary_submit_button.dart';
-import 'package:swaram_ai/ui/widgets/common/swecha_footer/swecha_footer.dart';
 
 import 'profile_viewmodel.dart';
 
