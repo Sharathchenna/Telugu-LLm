@@ -17,7 +17,7 @@ class CategoryModel extends BaseViewModel {
         .map((e) => ChipItem(
             id: e["\$id"],
             label: e["title"],
-            imagePath: "assets/icons/book_open.png"))
+            imagePath: e["category_icon"] ?? "assets/icons/book_open.png"))
         .toList();
   }
 
