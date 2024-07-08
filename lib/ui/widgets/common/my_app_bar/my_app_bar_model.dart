@@ -18,6 +18,9 @@ class MyAppBarModel extends ReactiveViewModel {
   }
 
   void navigateToMemoScreen() => _navigationService.navigateToMemoView();
+  void navigateToDashboardView()  {
+    _navigationService.replaceWithDashboardView();
+  }
   void navigateToProfileScreen() {
     _navigationService.navigateToProfileView();
   }
