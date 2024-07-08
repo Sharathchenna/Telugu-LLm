@@ -5,6 +5,8 @@ import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'package:swaram_ai/ui/widgets/common/recording/recording_model.dart';
+import 'package:swaram_ai/ui/widgets/common/reward_footer/reward_footer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecordingAction extends StackedView<RecordingModel> {
   const RecordingAction({
@@ -22,7 +24,7 @@ class RecordingAction extends StackedView<RecordingModel> {
         children: [
           verticalSpaceTiny,
           GestureDetector(
-            onTap: viewModel.toggleRecording,
+            onTap: () => viewModel.toggleRecording(context),  // Wrap in an anonymous function
             child: AvatarGlow(
               glowColor: kcBlueLightColor,
               duration: const Duration(milliseconds: 2000),
@@ -49,8 +51,8 @@ class RecordingAction extends StackedView<RecordingModel> {
           ),
           Text(
             viewModel.isRecordStarted
-                ? 'Tap the mic to stop'
-                : 'Tap the mic to speak',
+                ? AppLocalizations.of(context)!.recordFooterStop
+                : AppLocalizations.of(context)!.recordFooterSpeak,
             style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w300,
             ),
@@ -58,7 +60,7 @@ class RecordingAction extends StackedView<RecordingModel> {
           SizedBox(
             height: screenHeightFraction(context, dividedBy: 60),
           ),
-          // const RewardFooter(),
+          const RewardFooter(),
         ],
       ),
     );
