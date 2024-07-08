@@ -26,20 +26,25 @@ class MyAppBar extends StackedView<MyAppBarModel>
       centerTitle: true,
       automaticallyImplyLeading: false,
       leading: viewModel.popupMenu,
-      title: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 3, 0),
-            child: Image.asset(
-              'assets/images/ai_logo.png',
-              width: 40,
-              height: 40,
-              fit: BoxFit.cover,
+      title: GestureDetector(
+        onTap: (){
+          viewModel.navigateToDashboardView();
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 3, 0),
+              child: Image.asset(
+                'assets/images/ai_logo.png',
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
             ),
-          Text(
+            Text(
               'Telugu Corpus',
               textAlign: TextAlign.center,
               style: GoogleFonts.montserrat(

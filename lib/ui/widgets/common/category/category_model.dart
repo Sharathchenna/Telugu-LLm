@@ -18,32 +18,33 @@ class CategoryModel extends BaseViewModel {
 
     // Filter categoriesList by published column and sort by category_rank
     var filteredCategoriesList = categoriesList
-        .where((category) => category["published"] == true)
+        .where((category) => category["published"] == true);
 
-    filteredCategoriesList.sort((a, b) => 
-        (a["category_rank"]).compareTo(b["category_rank"]));
+    // filteredCategoriesList.sort((a, b) =>
+    //    (a["category_rank"]).compareTo(b["category_rank"]));
+    // TO-DO : sort function shows error in the above line
 
 
     return filteredCategoriesList
         .map((e) => ChipItem(
-            id: e["\$id"],
-            label: settingsBox.get('isEnglish', defaultValue: true)
-                ? e["title"]
-                : (e['title_telugu'] ?? e["title"]),
-                imagePath: e["category_icon"] ?? "assets/icons/book_open.png",
-        .toList();
+        id: e["\$id"],
+        label: settingsBox.get('isEnglish', defaultValue: true)
+            ? e["title"]
+            : (e['title_telugu'] ?? e["title"]),
+        imagePath: e["category_icon"] ?? "assets/icons/book_open.png"))
+            .toList();
 
-  }
+    }
 
   List<ChipItem> get categoryData {
     return categoryDataItem
         .map(
           (item) => ChipItem(
-      id: item.id,
-      label: item.label,
-      imagePath: item.imagePath,
-          ),
-        )
+        id: item.id,
+        label: item.label,
+        imagePath: item.imagePath,
+      ),
+    )
         .toList();
   }
 }
