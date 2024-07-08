@@ -10,24 +10,31 @@ class CategoryModel extends BaseViewModel {
   final _logger = getLogger("Category Model");
 
   Future<List<ChipItem>> getCategoryData() async {
-    _logger.d("get category data called");
+    _logger.d("Fetching category data...");
     var categoriesList = await _categoryService.getCategories();
     _logger.d(categoriesList);
-    return categoriesList
-        .map((e) => ChipItem(
-            id: e["\$id"],
-            label: e["title"],
-            imagePath: e["category_icon"] ?? "assets/icons/book_open.png"))
+
+    // Filter categoriesList by published column and sort by category_rank
+    var filteredCategoriesList = categoriesList
+        .where((category) => category["published"] == true)
         .toList();
+    filteredCategoriesList.sort((a, b) => 
+        (a["category_rank"]).compareTo(b["category_rank"]));
+
+    return filteredCategoriesList.map((e) => ChipItem(
+      id: e["\$id"],
+      label: e["title"],
+      imagePath: e["category_icon"] ?? "assets/icons/book_open.png",
+    )).toList();
   }
 
   List<ChipItem> get categoryData {
     return categoryDataItem
         .map(
           (item) => ChipItem(
-            id: item.id,
-            label: item.label,
-            imagePath: item.imagePath,
+      id: item.id,
+      label: item.label,
+      imagePath: item.imagePath,
           ),
         )
         .toList();
