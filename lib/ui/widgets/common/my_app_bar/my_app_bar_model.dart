@@ -75,9 +75,9 @@ class MyAppBarModel extends ReactiveViewModel {
             case 2:
               navigateToMemoScreen();
               break;
-            case 3:
-              navigateToProfileScreen();
-              break;
+            // case 3:
+            //   navigateToProfileScreen();
+            //   break;
           }
         },
         itemBuilder: (BuildContext context) {
@@ -104,13 +104,13 @@ class MyAppBarModel extends ReactiveViewModel {
                 leading: Icon(Icons.save),
               ),
             ),
-            const PopupMenuItem(
-              value: 3,
-              child: ListTile(
-                title: Text("Profile"),
-                leading: Icon(Icons.person_rounded),
-              ),
-            ),
+            // const PopupMenuItem(
+            //   value: 3,
+            //   child: ListTile(
+            //     title: Text("Profile"),
+            //     leading: Icon(Icons.person_rounded),
+            //   ),
+            // ),
           ];
         },
       );
