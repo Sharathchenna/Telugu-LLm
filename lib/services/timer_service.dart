@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:appwrite/appwrite.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,8 +33,6 @@ class TimerService with ListenableServiceMixin {
 
   set videoRecordingStarted(bool status) => _recordingStarted.value = status;
 
-  Timer? _timer;
-
   TimerService() {
     listenToReactiveValues([_recordingStarted]);
   }
@@ -56,11 +55,12 @@ class TimerService with ListenableServiceMixin {
           title: "Audio Saved",
           message: "Your audio has been successfuly saved!",
           contentType: ContentType.success);
+      // _navigationService.navigateToRecordedInfoView();
     } catch (e) {
       _logger.e("Saving the recording in local failed: ${e.toString()}");
       SnackBarHelper.showSnackBar(
           title: "Audio Failed",
-          message: "There was an error saving audio. Please try again!",
+          message: "There was an error saving aaudio. Please try again!",
           contentType: ContentType.failure);
     } finally {
       _recordingStarted.value = false;
@@ -76,20 +76,18 @@ class TimerService with ListenableServiceMixin {
 
   Future<void> _startRecording() async {
     _logger.i("Start recording is being called");
-    final userBox = await Hive.openBox(authBox);
+    // final userBox = await Hive.openBox(authBox);
     try {
       if (await _recorder.hasPermission()) {
-        _timer = Timer.periodic(const Duration(seconds: 10), ((timer) {
-          uploadAudioAtEverySixtySeconds();
-        }));
+        // _timer = Timer.periodic(const Duration(seconds: 10), ((timer) {
+        //   uploadAudioAtEverySixtySeconds();
+        // }));
         _logger.i("User granted the microphone permission");
         if (!await _recorder.isRecording()) {
           _logger.i("Recording not started yet and going to start");
           final path = await _localPath;
-          var userId = userBox.get("auth")["userId"];
-          userId = userId.substring(userId.length - 10);
-          int currentUnix = DateTime.now().millisecondsSinceEpoch;
-          fileName = "Audio_${userId}_$currentUnix.aac";
+          // var userId = userBox.get("auth")["userId"];
+          fileName = "Audio_${ID.unique()}.aac";
           fileName = _utilService.sanitizeFileId(fileName);
           _logger.i("Recording $fileName");
           await _recorder.start(const RecordConfig(), path: "$path/$fileName");
@@ -114,6 +112,7 @@ class TimerService with ListenableServiceMixin {
     isRecordingStarted ? await _stopRecording() : await _startRecording();
   }
 
+//Function to split the audio for 60 seconds
   void uploadAudioAtEverySixtySeconds() async {
     String? path = await _recorder.stop();
     _logger.i("recording file: $path");
@@ -136,8 +135,7 @@ class TimerService with ListenableServiceMixin {
           final path = await _localPath;
           var userId = userBox.get("auth")["userId"];
           userId = userId.substring(userId.length - 10);
-          int currentUnix = DateTime.now().millisecondsSinceEpoch;
-          fileName = "Audio_${userId}_$currentUnix.aac";
+          fileName = "Audio_${ID.unique()}.aac";
           fileName = _utilService.sanitizeFileId(fileName);
           _logger.i("Recording $fileName");
           await _recorder.start(const RecordConfig(), path: "$path/$fileName");
