@@ -80,11 +80,12 @@ class MemoView extends StackedView<MemoViewModel> {
                               const Icon(
                                 Icons.video_file_outlined,
                                 color: kcDarkGreyColor,
+                              )
+                            else
+                              const Icon(
+                                Icons.audio_file_outlined,
+                                color: kcDarkGreyColor,
                               ),
-                            const Icon(
-                              Icons.keyboard_arrow_down_outlined,
-                              color: kcPrimaryBlueColor,
-                            ),
                           ],
                         ),
                         leading: viewModel.getStatusIcon(
