@@ -64,9 +64,9 @@ class MemoViewModel extends BaseViewModel {
       _recordingList = recordBox.values;
       // _recordingList?.toList().sort((a, b) =>
       //     DateTime().  .parse(b.created).compareTo(DateTime.parse(a.created)));
-      if (recordBox.isOpen) {
-        await recordBox.close();
-      }
+      // if (recordBox.isOpen) {
+      //   await recordBox.close();
+      // }
       rebuildUi();
     });
   }
