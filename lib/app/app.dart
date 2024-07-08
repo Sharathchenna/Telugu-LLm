@@ -22,6 +22,7 @@ import 'package:swaram_ai/ui/views/video_recording/video_recording_view.dart';
 import 'package:swaram_ai/ui/views/memo_detail/memo_detail_view.dart';
 import 'package:swaram_ai/services/util_service.dart';
 import 'package:swaram_ai/ui/views/profile/profile_view.dart';
+import 'package:swaram_ai/ui/views/recorded_info/recorded_info_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -37,6 +38,7 @@ import 'package:swaram_ai/ui/views/profile/profile_view.dart';
     MaterialRoute(page: VideoRecordingView),
     MaterialRoute(page: MemoDetailView),
     MaterialRoute(page: ProfileView),
+    MaterialRoute(page: RecordedInfoView),
 // @stacked-route
   ],
   dependencies: [
