@@ -26,8 +26,8 @@ class Recording extends StackedView<RecordingModel> {
                   child: Lottie.asset("assets/lottie/wave_animation.json"),
                 )
               : Header(
-                  headerText: viewModel.headerText,
-                  subTitleText: viewModel.subTitleText,
+                  headerText: viewModel.headerText(context),
+                  subTitleText: viewModel.subTitleText(context),
                 ),
         ),
         const RecordingAction(),

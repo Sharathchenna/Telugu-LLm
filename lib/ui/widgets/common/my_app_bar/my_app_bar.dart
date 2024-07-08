@@ -60,7 +60,9 @@ class MyAppBar extends StackedView<MyAppBarModel>
       actions: [
         viewModel.networkWidget,
         horizontalSpaceSmall,
-        PrimaryButton(onTapHandler: () {}, iconData: Icons.language_outlined),
+        PrimaryButton(
+            onTapHandler: () => viewModel.toggleLanguage(context),
+            iconData: Icons.language_outlined),
         horizontalSpaceSmall,
       ],
     );
