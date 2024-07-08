@@ -38,9 +38,10 @@ class BackgroundService {
       }
     } catch (e) {
       _logger.e('Error processing recordings: $e');
-    } finally {
-      recordBox?.close();
     }
+    // finally {
+      // recordBox?.close();
+    // }
   }
 
   Future<void> _updateRecordingStatusAndUpload(
