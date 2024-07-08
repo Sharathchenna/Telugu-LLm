@@ -1,12 +1,11 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
 import 'package:swaram_ai/ui/widgets/common/recording/recording_model.dart';
-import 'package:swaram_ai/ui/widgets/common/reward_footer/reward_footer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecordingAction extends StackedView<RecordingModel> {
   const RecordingAction({
@@ -24,7 +23,8 @@ class RecordingAction extends StackedView<RecordingModel> {
         children: [
           verticalSpaceTiny,
           GestureDetector(
-            onTap: () => viewModel.toggleRecording(context),  // Wrap in an anonymous function
+            onTap: () => viewModel
+                .toggleRecording(context), // Wrap in an anonymous function
             child: AvatarGlow(
               glowColor: kcBlueLightColor,
               duration: const Duration(milliseconds: 2000),
@@ -57,10 +57,10 @@ class RecordingAction extends StackedView<RecordingModel> {
               fontWeight: FontWeight.w300,
             ),
           ),
-          SizedBox(
-            height: screenHeightFraction(context, dividedBy: 60),
-          ),
-          const RewardFooter(),
+          // SizedBox(
+          //   height: screenHeightFraction(context, dividedBy: 60),
+          // ),
+          // const RewardFooter(),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.dialogs.dart';
@@ -7,8 +8,6 @@ import 'package:swaram_ai/app/app.logger.dart';
 import 'package:swaram_ai/app/app.router.dart';
 import 'package:swaram_ai/services/category_service.dart';
 import 'package:swaram_ai/services/timer_service.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecordingModel extends ReactiveViewModel {
   final _timerService = locator<TimerService>();
