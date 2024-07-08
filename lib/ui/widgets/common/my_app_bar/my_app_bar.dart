@@ -32,30 +32,35 @@ class MyAppBar extends StackedView<MyAppBarModel>
           color: kcPrimaryBlueColor,
         ),
       ),
-      title: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 3, 0),
-            child: Image.asset(
-              'assets/images/ai_logo.png',
-              width: 40,
-              height: 40,
-              fit: BoxFit.cover,
+      title: GestureDetector(
+        onTap: (){
+          viewModel.navigateToDashboardView();
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 3, 0),
+              child: Image.asset(
+                'assets/images/ai_logo.png',
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
           Text(
-            'Telugu Corpus',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.montserrat(
-              color: kcPrimaryBlueColor,
-              fontSize: getResponsiveFontSize(context, fontSize: 40),
-              fontWeight: FontWeight.w500,
+              'Telugu Corpus',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.montserrat(
+                color: kcPrimaryBlueColor,
+                fontSize: getResponsiveFontSize(context, fontSize: 40),
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       actions: [
         viewModel.networkWidget,
