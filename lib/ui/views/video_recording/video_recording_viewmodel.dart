@@ -216,7 +216,7 @@ class VideoRecordingViewModel extends BaseViewModel
       userId = userId.substring(userId.length - 10);
       int currentUnix = DateTime.now().millisecondsSinceEpoch;
 
-      var fileName = "Video_${userId}_$currentUnix";
+      var fileName = "V_${userId}_$currentUnix";
       fileName = _utilService.sanitizeFileId(fileName);
       fileName = "$fileName.$fileFormat";
 
