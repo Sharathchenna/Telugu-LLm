@@ -12,13 +12,16 @@ class InputWithField extends StackedView<InputWithFieldModel> {
   final TextEditingController textController;
   final FocusNode focusNode;
   final TextInputType textInputType;
-  const InputWithField(
-      {required this.labelName,
-      required this.fieldLabel,
-      required this.textController,
-      required this.focusNode,
-      this.textInputType = TextInputType.text,
-      super.key});
+  bool? enabled;
+  InputWithField({
+    this.enabled,
+    required this.labelName,
+    required this.fieldLabel,
+    required this.textController,
+    required this.focusNode,
+    this.textInputType = TextInputType.text,
+    super.key,
+  });
 
   @override
   Widget builder(
@@ -45,6 +48,7 @@ class InputWithField extends StackedView<InputWithFieldModel> {
           ),
           verticalSpaceTiny,
           TextFormField(
+            enabled: enabled,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: textController,
             focusNode: focusNode,

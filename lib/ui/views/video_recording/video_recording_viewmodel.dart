@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:camera/camera.dart';
 
@@ -19,6 +20,7 @@ import 'package:swaram_ai/ui/common/app_hive.dart';
 import 'package:swaram_ai/ui/common/app_strings.dart';
 import 'package:swaram_ai/ui/common/snack_bar.dart';
 import 'package:swaram_ai/ui/utils/permissions_util.dart';
+import 'package:video_compress/video_compress.dart';
 
 class VideoRecordingViewModel extends BaseViewModel
     with WidgetsBindingObserver {
@@ -213,21 +215,20 @@ class VideoRecordingViewModel extends BaseViewModel
 
       String fileFormat = videoFile.path.split('.').last;
       String userId = userBox.get("auth")["userId"];
-      userId = userId.substring(userId.length - 10);
-      int currentUnix = DateTime.now().millisecondsSinceEpoch;
+      // int currentUnix = DateTime.now().millisecondsSinceEpoch;
 
-      var fileName = "V_${userId}_$currentUnix";
-      fileName = _utilService.sanitizeFileId(fileName);
-      fileName = "$fileName.$fileFormat";
+      var fileName = "Video_${ID.unique()}.$fileFormat";
 
       _videoFile = File("$dirPath/$fileName");
 
       _videoFile = await videoFile.rename(_videoFile.path);
-      _logger.i("Video File Path: ${_videoFile.path}");
+      _logger.d("videoFile path: ${_videoFile.path}");
+      final compressedPath = await compressVideo(_videoFile.path, userId);
+      _logger.i("Video File Path: ${_videoFile.path} $compressedPath");
       _hiveService.saveRecordings(
         recording: Recording(
             id: fileName,
-            path: _videoFile.path,
+            path: compressedPath,
             name: fileName,
             status: onDevice,
             created: DateTime.now().toIso8601String(),
@@ -242,12 +243,13 @@ class VideoRecordingViewModel extends BaseViewModel
       // _startVideoPlayer();
     } else {
       await startVideoRecording();
-      _timer = Timer.periodic(const Duration(seconds: 10), ((timer) {
-        uploadVideoAtEverySixtySeconds();
-      }));
+      // _timer = Timer.periodic(const Duration(seconds: 60), ((timer) {
+      //   uploadVideoAtEverySixtySeconds();
+      // }));
     }
   }
 
+// Upload the video at every sixty seconds
   void uploadVideoAtEverySixtySeconds() async {
     final CameraController? cameraController = controller;
     if (isRecordingInProgress) {
@@ -263,18 +265,18 @@ class VideoRecordingViewModel extends BaseViewModel
         userId = userId.substring(userId.length - 10);
         int currentUnix = DateTime.now().millisecondsSinceEpoch;
 
-        var fileName = "Video_${userId}_$currentUnix";
-        fileName = _utilService.sanitizeFileId(fileName);
-        fileName = "$fileName.$fileFormat";
+        var fileName = "Video_${userId}_$currentUnix.$fileFormat";
 
         _videoFile = File("$dirPath/$fileName");
 
         _videoFile = await videoFile.rename(_videoFile.path);
-        _logger.i("Video File Path: ${_videoFile.path}");
+        final compressedPath = await compressVideo(_videoFile.path, userId);
+
+        _logger.i("Video File Path: ${_videoFile.path} $compressedPath");
         _hiveService.saveRecordings(
           recording: Recording(
               id: fileName,
-              path: _videoFile.path,
+              path: compressedPath,
               name: fileName,
               status: onDevice,
               created: DateTime.now().toIso8601String(),
@@ -304,9 +306,29 @@ class VideoRecordingViewModel extends BaseViewModel
     } on CameraException catch (e) {
       _logger.d(e);
       _logger.e("Error stopping video recording: $e");
-      // SnackBarHelper.showSnackBar(
-      //     message: "Something went wrong", contentType: ContentType.failure);
+      SnackBarHelper.showSnackBar(
+          message: "Something went wrong", contentType: ContentType.failure);
       return null;
+    }
+  }
+
+  Future<String> compressVideo(String videoPath, String userID) async {
+    final mediaInfo = await VideoCompress.compressVideo(
+      videoPath,
+      quality: VideoQuality.LowQuality,
+    );
+
+    if (mediaInfo != null && mediaInfo.path != null) {
+      _logger.i('Video compressed: ${mediaInfo.path}');
+      String dirPath = mediaInfo.path!;
+      _logger.i("Dir path: $dirPath");
+
+      String fileFormat = mediaInfo.path!.split('.').last;
+      _logger.i("fileFormat $fileFormat");
+      // int currentUnix = DateTime.now().millisecondsSinceEpoch;
+      return dirPath;
+    } else {
+      return videoPath;
     }
   }
 
