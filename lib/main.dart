@@ -4,18 +4,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.bottomsheets.dart';
 import 'package:swaram_ai/app/app.dialogs.dart';
 import 'package:swaram_ai/app/app.hive.dart';
 import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.router.dart';
-import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/services/background_task_service/background_service.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 @pragma("vm:entry-point")
 void onStart(ServiceInstance serviceInstance) async {

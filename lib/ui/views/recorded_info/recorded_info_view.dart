@@ -4,7 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'recorded_info_viewmodel.dart';
 
 class RecordedInfoView extends StackedView<RecordedInfoViewModel> {
-  const RecordedInfoView({Key? key}) : super(key: key);
+  const RecordedInfoView({super.key});
 
   @override
   Widget builder(
@@ -13,7 +13,7 @@ class RecordedInfoView extends StackedView<RecordedInfoViewModel> {
     Widget? child,
   ) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Container(
         padding: const EdgeInsets.only(left: 25.0, right: 25.0),
       ),

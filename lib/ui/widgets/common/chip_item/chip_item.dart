@@ -21,7 +21,6 @@ class ChipItem extends StackedView<ChipItemModel> {
     ChipItemModel viewModel,
     Widget? child,
   ) {
-    print('imagePath $imagePath');
     return FittedBox(
       key: const ValueKey(true),
       child: FlexiChip(

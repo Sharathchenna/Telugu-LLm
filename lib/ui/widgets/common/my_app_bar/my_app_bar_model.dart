@@ -21,9 +21,9 @@ class MyAppBarModel extends ReactiveViewModel {
   MyAppBarModel() {
     _isEnglish = settingsBox.get('isEnglish', defaultValue: true);
     if (_isEnglish) {
-      setLocale(Locale('en'));
+      setLocale(const Locale('en'));
     } else {
-      setLocale(Locale('te'));
+      setLocale(const Locale('te'));
     }
   }
 
@@ -48,11 +48,13 @@ class MyAppBarModel extends ReactiveViewModel {
   }
 
   void navigateBack() => _navigationService.back();
-  void navigateToDashboardScreen() => _navigationService.navigateToDashboardView();
+  void navigateToDashboardScreen() =>
+      _navigationService.navigateToDashboardView();
   void navigateToMemoScreen() => _navigationService.navigateToMemoView();
-  void navigateToDashboardView()  {
+  void navigateToDashboardView() {
     _navigationService.replaceWithDashboardView();
   }
+
   void navigateToProfileScreen() {
     _navigationService.navigateToProfileView();
   }
@@ -87,7 +89,6 @@ class MyAppBarModel extends ReactiveViewModel {
                 title: Text("Close"),
                 leading: Icon(Icons.close_rounded),
                 // close the menu
-
               ),
             ),
             const PopupMenuItem(
