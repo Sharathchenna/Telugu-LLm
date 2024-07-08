@@ -47,6 +47,8 @@ class MyAppBarModel extends ReactiveViewModel {
     return [networkService];
   }
 
+  void navigateBack() => _navigationService.back();
+  void navigateToDashboardScreen() => _navigationService.navigateToDashboardView();
   void navigateToMemoScreen() => _navigationService.navigateToMemoView();
   void navigateToDashboardView()  {
     _navigationService.replaceWithDashboardView();
@@ -54,6 +56,64 @@ class MyAppBarModel extends ReactiveViewModel {
   void navigateToProfileScreen() {
     _navigationService.navigateToProfileView();
   }
+
+  Widget get popupMenu => PopupMenuButton(
+        icon: const Icon(
+          Icons.menu,
+          color: kcPrimaryBlueColor,
+        ),
+        color: kcVeryBlueLightColor,
+        onSelected: (value) {
+          switch (value) {
+            case 0:
+              navigateBack();
+              break;
+            case 1:
+              navigateToDashboardScreen();
+              break;
+            case 2:
+              navigateToMemoScreen();
+              break;
+            case 3:
+              navigateToProfileScreen();
+              break;
+          }
+        },
+        itemBuilder: (BuildContext context) {
+          return [
+            const PopupMenuItem(
+              value: 0,
+              child: ListTile(
+                title: Text("Close"),
+                leading: Icon(Icons.close_rounded),
+                // close the menu
+
+              ),
+            ),
+            const PopupMenuItem(
+              value: 1,
+              child: ListTile(
+                title: Text("Dashboard"),
+                leading: Icon(Icons.dashboard_rounded),
+              ),
+            ),
+            const PopupMenuItem(
+              value: 2,
+              child: ListTile(
+                title: Text("Recordings"),
+                leading: Icon(Icons.save),
+              ),
+            ),
+            const PopupMenuItem(
+              value: 3,
+              child: ListTile(
+                title: Text("Profile"),
+                leading: Icon(Icons.person_rounded),
+              ),
+            ),
+          ];
+        },
+      );
 
   Widget get networkWidget => AnimatedCrossFade(
       firstChild: Column(
