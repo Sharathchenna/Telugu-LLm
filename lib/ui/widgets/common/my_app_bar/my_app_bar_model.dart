@@ -48,11 +48,10 @@ class MyAppBarModel extends ReactiveViewModel {
   }
 
   void navigateBack() => _navigationService.back();
-  void navigateToDashboardScreen() =>
-      _navigationService.navigateToDashboardView();
+  void navigateToDashboardScreen() => _navigationService.back();
   void navigateToMemoScreen() => _navigationService.navigateToMemoView();
   void navigateToDashboardView() {
-    _navigationService.replaceWithDashboardView();
+    _navigationService.back();
   }
 
   void navigateToProfileScreen() {
