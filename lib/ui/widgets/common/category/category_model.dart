@@ -20,8 +20,8 @@ class CategoryModel extends BaseViewModel {
     var filteredCategoriesList = categoriesList
         .where((category) => category["published"] == true);
 
-    filteredCategoriesList.sort((a, b) =>
-        (a["category_rank"]).compareTo(b["category_rank"]));
+    // filteredCategoriesList.sort((a, b) =>
+    //    (a["category_rank"]).compareTo(b["category_rank"]));
     // TO-DO : sort function shows error in the above line
 
 
