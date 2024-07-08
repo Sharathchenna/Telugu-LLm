@@ -25,13 +25,7 @@ class MyAppBar extends StackedView<MyAppBarModel>
       elevation: 0,
       centerTitle: true,
       automaticallyImplyLeading: false,
-      leading: GestureDetector(
-        onTap: viewModel.navigateToMemoScreen,
-        child: const Icon(
-          Icons.menu,
-          color: kcPrimaryBlueColor,
-        ),
-      ),
+      leading: viewModel.popupMenu,
       title: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
