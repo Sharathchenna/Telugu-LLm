@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.locator.dart';
 import 'package:swaram_ai/app/app.router.dart';
+import 'package:swaram_ai/main.dart';
 import 'package:swaram_ai/services/network_service.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
@@ -11,6 +13,34 @@ import 'package:swaram_ai/ui/common/ui_helpers.dart';
 class MyAppBarModel extends ReactiveViewModel {
   final networkService = locator<NetworkService>();
   final _navigationService = locator<NavigationService>();
+  bool isEnglish = false;
+  Locale? _locale;
+  bool _isEnglish = true;
+  Box settingsBox = Hive.box('settings');
+
+  MyAppBarModel() {
+    _isEnglish = settingsBox.get('isEnglish', defaultValue: true);
+    if (_isEnglish) {
+      setLocale(Locale('en'));
+    } else {
+      setLocale(Locale('te'));
+    }
+  }
+
+  void setLocale(Locale locale) {
+    _locale = locale;
+  }
+
+  void toggleLanguage(BuildContext context) {
+    if (_isEnglish) {
+      MainApp.setLocale(context, const Locale('te'));
+      settingsBox.put('isEnglish', false);
+    } else {
+      MainApp.setLocale(context, const Locale('en'));
+      settingsBox.put('isEnglish', true);
+    }
+    _isEnglish = !_isEnglish; // Toggle the flag after setting the locale
+  }
 
   @override
   List<ListenableServiceMixin> get listenableServices {
@@ -20,6 +50,9 @@ class MyAppBarModel extends ReactiveViewModel {
   void navigateBack() => _navigationService.back();
   void navigateToDashboardScreen() => _navigationService.navigateToDashboardView();
   void navigateToMemoScreen() => _navigationService.navigateToMemoView();
+  void navigateToDashboardView()  {
+    _navigationService.replaceWithDashboardView();
+  }
   void navigateToProfileScreen() {
     _navigationService.navigateToProfileView();
   }

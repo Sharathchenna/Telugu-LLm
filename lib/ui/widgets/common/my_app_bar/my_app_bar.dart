@@ -39,22 +39,24 @@ class MyAppBar extends StackedView<MyAppBarModel>
               height: 40,
               fit: BoxFit.cover,
             ),
-          ),
           Text(
-            'Telugu Corpus',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.montserrat(
-              color: kcPrimaryBlueColor,
-              fontSize: getResponsiveFontSize(context, fontSize: 40),
-              fontWeight: FontWeight.w500,
+              'Telugu Corpus',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.montserrat(
+                color: kcPrimaryBlueColor,
+                fontSize: getResponsiveFontSize(context, fontSize: 40),
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       actions: [
         viewModel.networkWidget,
         horizontalSpaceSmall,
-        PrimaryButton(onTapHandler: () {}, iconData: Icons.language_outlined),
+        PrimaryButton(
+            onTapHandler: () => viewModel.toggleLanguage(context),
+            iconData: Icons.language_outlined),
         horizontalSpaceSmall,
       ],
     );

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:swaram_ai/main.dart';
 import 'package:swaram_ai/ui/common/app_colors.dart';
 import 'package:swaram_ai/ui/common/form_validation.dart';
 import 'package:swaram_ai/ui/common/ui_helpers.dart';
@@ -14,6 +15,7 @@ import 'package:swaram_ai/ui/widgets/common/primary_submit_button/primary_submit
 import 'package:swaram_ai/ui/widgets/common/swecha_footer/swecha_footer.dart';
 
 import 'sign_in_viewmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @FormView(fields: [
   FormTextField(name: 'userName', validator: FormValidation.validateEmptyValue),
@@ -60,9 +62,7 @@ class SignInView extends StackedView<SignInViewModel> with $SignInView {
                   ), // Example icon, adjust as needed
                   iconSize: 32, // Adjust icon size as needed
                   padding: const EdgeInsets.all(8), // Adjust padding as needed
-                  onPressed: () {
-                    // Handle button press
-                  },
+                  onPressed: () => viewModel.toggleLanguage(context),
                 ),
               ),
             ),
@@ -76,63 +76,61 @@ class SignInView extends StackedView<SignInViewModel> with $SignInView {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: CloseKeyPadWidget(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const LoginHeader(
-                        headerText: "Sign in to your account",
-                      ),
-                      InputWithField(
-                        labelName: "Name",
-                        fieldLabel: "Enter a name for your profile",
-                        textController: userNameController,
-                        focusNode: userNameFocusNode,
-                      ),
-                      if (viewModel.isFormSubmitted &&
-                          viewModel.hasUserNameValidationMessage) ...[
-                        verticalSpaceTiny,
-                        Text(
-                          viewModel.userNameValidationMessage!,
-                          style: GoogleFonts.montserrat(
-                            color: kcErrorColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    LoginHeader(
+                      headerText: AppLocalizations.of(context)!.signInHeading,
+                    ),
+                    InputWithField(
+                      labelName: AppLocalizations.of(context)!.name, //"Name",
+                      fieldLabel: AppLocalizations.of(context)!.nameLabel,
+                      textController: userNameController,
+                      focusNode: userNameFocusNode,
+                    ),
+                    if (viewModel.isFormSubmitted &&
+                        viewModel.hasUserNameValidationMessage) ...[
+                      verticalSpaceTiny,
+                      Text(
+                        viewModel.userNameValidationMessage!,
+                        style: GoogleFonts.montserrat(
+                          color: kcErrorColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ],
-                      verticalSpaceMedium,
-                      InputWithField(
-                        labelName: "Phone number",
-                        fieldLabel: "Enter your phone number here",
-                        textController: phoneNumberController,
-                        focusNode: phoneNumberFocusNode,
-                        textInputType: TextInputType.number,
                       ),
-                      if (viewModel.isFormSubmitted &&
-                          viewModel.hasPhoneNumberValidationMessage) ...[
-                        verticalSpaceTiny,
-                        Text(
-                          viewModel.phoneNumberValidationMessage!,
-                          style: GoogleFonts.montserrat(
-                            color: kcErrorColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                      verticalSpaceMedium,
-                      PrimarySubmitButton(
-                        isLoading: viewModel.isLoading,
-                        buttonText: "Sign In",
-                        onTap: viewModel.signupAndNavigateToOtp,
-                      ),
-                      // const InfoMessage(
-                      //     infoText: "No account yet?",
-                      //     actionString: "Sign up now"),
                     ],
-                  ),
+                    verticalSpaceMedium,
+                    InputWithField(
+                      labelName: AppLocalizations.of(context)!.phone, //"Name",
+                      fieldLabel: AppLocalizations.of(context)!.phlabel,
+                      textController: phoneNumberController,
+                      focusNode: phoneNumberFocusNode,
+                      textInputType: TextInputType.number,
+                    ),
+                    if (viewModel.isFormSubmitted &&
+                        viewModel.hasPhoneNumberValidationMessage) ...[
+                      verticalSpaceTiny,
+                      Text(
+                        viewModel.phoneNumberValidationMessage!,
+                        style: GoogleFonts.montserrat(
+                          color: kcErrorColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                    verticalSpaceMedium,
+                    PrimarySubmitButton(
+                      buttonText: AppLocalizations.of(context)!.signIn,
+                      isLoading: viewModel.isLoading,
+                      onTap: viewModel.signupAndNavigateToOtp,
+                    ),
+                    // const InfoMessage(
+                    //     infoText: "No account yet?",
+                    //     actionString: "Sign up now"),
+                  ],
                 ),
               ),
             ),

@@ -12,7 +12,7 @@ class RewardFooter extends StackedView<RewardFooterModel> {
     RewardFooterModel viewModel,
     Widget? child,
   ) {
-    return viewModel.getFooterWidget();
+    return viewModel.getFooterWidget(context);
   }
 
   @override

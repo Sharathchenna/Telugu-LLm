@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:swaram_ai/app/app.dialogs.dart';
@@ -6,6 +7,8 @@ import 'package:swaram_ai/app/app.logger.dart';
 import 'package:swaram_ai/app/app.router.dart';
 import 'package:swaram_ai/services/category_service.dart';
 import 'package:swaram_ai/services/timer_service.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecordingModel extends ReactiveViewModel {
   final _timerService = locator<TimerService>();
@@ -20,24 +23,25 @@ class RecordingModel extends ReactiveViewModel {
   List<ListenableServiceMixin> get listenableServices =>
       [_timerService, _categoryService];
 
-  Future<void> toggleRecording() async {
+  Future<void> toggleRecording(BuildContext context) async {
     if (!isRecordStarted) {
-      await handleNewRecordingRequest();
+      await handleNewRecordingRequest(context);
     } else {
       await startOrStopCurrentRecording();
     }
   }
 
-  Future<void> handleNewRecordingRequest() async {
-    DialogResponse<bool>? isVideoRequested = await _dialogService.showCustomDialog(
-        variant: DialogType.confirm,
-        title: "You can record video too!",
-        description:
-            "Video recording is available. Do you want to access camera and start recording?",
-        mainButtonTitle: "Access camera",
-        barrierDismissible: true,
-        useSafeArea: true,
-        secondaryButtonTitle: "Maybe later");
+  Future<void> handleNewRecordingRequest(BuildContext context) async {
+    DialogResponse<bool>? isVideoRequested =
+        await _dialogService.showCustomDialog(
+      variant: DialogType.confirm,
+      title: AppLocalizations.of(context)!.videomsg,
+      description: AppLocalizations.of(context)!.videomsg2,
+      mainButtonTitle: AppLocalizations.of(context)!.accessCamera,
+      barrierDismissible: true,
+      useSafeArea: true,
+      secondaryButtonTitle: AppLocalizations.of(context)!.maybeLater,
+    );
 
     if (isVideoRequested!.confirmed) {
       navigateToVideoRecordingView();
@@ -56,12 +60,12 @@ class RecordingModel extends ReactiveViewModel {
     await _timerService.startOrStopRecording();
   }
 
-  String get headerText => _categoryService.showFront
-      ? "Say something, start recording."
-      : "Start narrating a fables now!";
+  String headerText(BuildContext context) => _categoryService.showFront
+      ? AppLocalizations.of(context)!.recordingHeader
+      : AppLocalizations.of(context)!.startNarating;
 
-  String get subTitleText => _categoryService.showFront
-      ? "Already know what to speak, just go ahead and record!"
+  String subTitleText(BuildContext context) => _categoryService.showFront
+      ? AppLocalizations.of(context)!.recordingSubHeader
       : "";
 
   @override
