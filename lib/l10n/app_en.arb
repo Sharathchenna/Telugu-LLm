@@ -1,0 +1,23 @@
+{
+    "name": "Name",
+    "phone": "Phone number",
+    "signIn": "Sign In",
+    "nameLabel": "Enter a name for your profile",
+    "phlabel": "Enter your phone number here",
+    "signInHeading":"Sign in to your account",
+    "dashBoardHeading":"What do you want to speak about?",
+    "dashBoardSubHeading":"Select a category to get topic ideas, and start recording",
+    "recordingHeader":"Say something, start recording.",
+    "recordingSubHeader": "Already know what to speak, just go ahead and record!",
+    "recordFooterSpeak":"Tap the mic to speak",
+    "recordFooterStop":"Tap the mic to stop",
+    "hoursOfService":"Hours of voice",
+    "maybeLater": "Maybe later",
+    "accessCamera": "Access camera",
+    "videomsg": "You can record video too!",
+    "videomsg2": "Video recording is available. Do you want to access camera and start recording?",
+    "creditScore": "Credit score",
+    "startNarating": "Start narrating a fables now"
+    
+    
+}
